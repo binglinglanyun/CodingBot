@@ -1,4 +1,5 @@
 ﻿using CodingBot.Common;
+using CodingBot.ToolWindows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -102,6 +103,8 @@ namespace CodingBot.ViewModels
                 return new DelegateCommand<object>((object obj) =>
                 {
                     SetUserData();
+
+                    CodingBot.Instance.ShowToolWindow(typeof(ScriptToolWindow));
                 });
             }
         }
