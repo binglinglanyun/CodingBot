@@ -1,5 +1,7 @@
-﻿using System;
+﻿using CodingBot.ViewModels;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +25,34 @@ namespace CodingBot.Controls
         public ConversationControl()
         {
             InitializeComponent();
+            this.DataContext = this;
         }
+
+        #region Properties
+        private UserDataControlViewModel _userDataViewModel = new UserDataControlViewModel();
+        public UserDataControlViewModel UserDataViewModel
+        {
+            get
+            {
+                return _userDataViewModel;
+            }
+            set
+            {
+                _userDataViewModel = value;
+                NotifyPropertyChanged("UserDataViewModel");
+            }
+        }
+        #endregion
+
+        #region Notify Prperty Changed
+        private event PropertyChangedEventHandler _propertyChanged;
+        protected void NotifyPropertyChanged(string propertyName)
+        {
+            if (_propertyChanged != null)
+            {
+                _propertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+        #endregion
     }
 }
