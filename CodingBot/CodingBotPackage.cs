@@ -42,6 +42,7 @@ namespace CodingBot
     [Guid(CodingBotPackage.PackageGuidString)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
     [ProvideToolWindow(typeof(ConversationToolWindow))]
+    [ProvideToolWindow(typeof(ScriptToolWindow))]
     public sealed class CodingBotPackage : Package
     {
         /// <summary>
