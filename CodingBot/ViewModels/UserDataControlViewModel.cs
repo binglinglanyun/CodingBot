@@ -119,10 +119,24 @@ namespace CodingBot.ViewModels
                     }
 
                     // Here should get TableStatus from bot
+                    List<TableItem> tableItems = new List<TableItem>();
+                    for (int j = 0; j < 2; j++)
+                    {
+                        TableItem tableItem = new TableItem();
+                        tableItem.TableName = "Table Item" + j;
+                        for (int i = 0; i < 4; i++)
+                        {
+                            tableItem.TableData.Add(new RowItem("xnl", "yunying"));
+                        }
+                        
+                        tableItems.Add(tableItem);
+                    }
+                    
                     var dataStatusWindow = CodingBotClient.Instance.ShowToolWindow(typeof(DataStatusToolWindow));
                     if (dataStatusWindow != null && dataStatusWindow is DataStatusToolWindow)
                     {
                         (dataStatusWindow as DataStatusToolWindow).BindInputDataStatus(userData);
+                        (dataStatusWindow as DataStatusToolWindow).BindTableDataStatus(tableItems);
                     }
                 });
             }

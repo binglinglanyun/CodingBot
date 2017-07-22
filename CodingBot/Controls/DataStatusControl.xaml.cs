@@ -31,9 +31,37 @@ namespace CodingBot.Controls
             this._inputDataStatus.DataContext = userData;
         }
 
-        public void BindTableStatus()
+        public void BindTableDataStatus(List<TableItem> tableItems)
         {
+            if (tableItems != null)
+            {
+                foreach (var tableItem in tableItems)
+                {
+                    GenerateTableData(tableItem);
+                }
+            }
+        }
 
+        private void GenerateTableData(TableItem tableItem)
+        {
+            if (tableItem != null)
+            {
+                DataGrid dataGrid = new DataGrid();
+                dataGrid.ItemsSource = tableItem.TableData;
+                dataGrid.LoadingRow += new EventHandler<DataGridRowEventArgs>(PreviewGrid_LoadingRow);
+
+                Expander expander = new Expander() { Header = tableItem.TableName };
+                expander.Margin = new Thickness(0,10,0,0);
+                expander.Foreground = new SolidColorBrush(Colors.White);
+                expander.Content = dataGrid;
+
+                this._tableStatus.Children.Add(expander);
+            }
+        }
+
+        private void PreviewGrid_LoadingRow(object sender, DataGridRowEventArgs e)
+        {
+            e.Row.Header = e.Row.GetIndex() + 1;
         }
     }
 }

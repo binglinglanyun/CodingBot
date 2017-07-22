@@ -4,21 +4,27 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CodingBot.Controls"
+             Background="{DynamicResource VsBrush.Window}"
+             Foreground="{DynamicResource VsBrush.WindowText}"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <StackPanel Orientation="Vertical">
-            <TextBlock Margin="0,5,0,0" Text="Input Path:" />
-            <ListBox ItemsSource="{Binding InputPath}" />
+            <Expander Header="Input Path" Margin="0,10,0,0" Foreground="{DynamicResource VsBrush.WindowText}">
+                <ListBox ItemsSource="{Binding InputPath}" />
+            </Expander>
 
-            <TextBlock Margin="0,5,0,0" Text="Output Path:" />
-            <ListBox ItemsSource="{Binding OutputPath}" />
+            <Expander Header="Output Path" Margin="0,10,0,0" Foreground="{DynamicResource VsBrush.WindowText}">
+                <ListBox ItemsSource="{Binding OutputPath}" />
+            </Expander>
 
-            <TextBlock Margin="0,5,0,0" Text="Resource Path:" />
-            <ListBox ItemsSource="{Binding ResourcePath}" />
+            <Expander Header="Resource Path" Margin="0,10,0,0" Foreground="{DynamicResource VsBrush.WindowText}">
+                <ListBox ItemsSource="{Binding ResourcePath}" />
+            </Expander>
 
-            <TextBlock Margin="0,5,0,0" Text="Reference Path:" />
-            <ListBox ItemsSource="{Binding ReferencePath}" />
+            <Expander Header="Reference Path" Margin="0,10,0,0" Foreground="{DynamicResource VsBrush.WindowText}">
+                <ListBox ItemsSource="{Binding ReferencePath}" />
+            </Expander>
         </StackPanel>
     </Grid>
 </UserControl>

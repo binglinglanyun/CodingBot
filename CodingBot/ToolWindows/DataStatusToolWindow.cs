@@ -30,5 +30,10 @@ namespace CodingBot.ToolWindows
         {
             (this.Content as DataStatusControl).BindInputDataStatus(userData);
         }
+
+        public void BindTableDataStatus(List<TableItem> tableItems)
+        {
+            (this.Content as DataStatusControl).BindTableDataStatus(tableItems);
+        }
     }
 }
