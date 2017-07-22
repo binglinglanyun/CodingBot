@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace CodingBot.ViewModels
 {
-    public class ViewModelBase
+    public class ViewModelBase : INotifyPropertyChanged
     {
-        private event PropertyChangedEventHandler _propertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
         protected void NotifyPropertyChanged(string propertyName)
         {
-            if (_propertyChanged != null)
+            if (PropertyChanged != null)
             {
-                _propertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
     }

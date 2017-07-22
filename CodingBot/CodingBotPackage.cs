@@ -43,6 +43,7 @@ namespace CodingBot
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
     [ProvideToolWindow(typeof(ConversationToolWindow))]
     [ProvideToolWindow(typeof(ScriptToolWindow))]
+    [ProvideToolWindow(typeof(DataStatusToolWindow))]
     public sealed class CodingBotPackage : Package
     {
         /// <summary>
@@ -69,7 +70,7 @@ namespace CodingBot
         /// </summary>
         protected override void Initialize()
         {
-            CodingBot.Initialize(this);
+            CodingBotClient.Initialize(this);
             base.Initialize();
         }
 

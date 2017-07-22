@@ -11,9 +11,7 @@ namespace CodingBot.ViewModels
 {
     public class UserDataControlViewModel : ViewModelBase
     {
-        private UserData _userData;
-
-        private void SetUserData()
+        private UserData GetUserData()
         {
             UserData userData = new UserData();
             if (!string.IsNullOrEmpty(this.InputPath))
@@ -36,7 +34,7 @@ namespace CodingBot.ViewModels
                 userData.ReferencePath = this.ReferencePath.Split(';').ToList();
             }
 
-            _userData = userData;
+            return userData;
         }
 
         #region Properties
@@ -102,9 +100,30 @@ namespace CodingBot.ViewModels
             {
                 return new DelegateCommand<object>((object obj) =>
                 {
-                    SetUserData();
+                    UserData userData = GetUserData();
 
-                    CodingBot.Instance.ShowToolWindow(typeof(ScriptToolWindow));
+                    // Here should get Script from bot
+                    var scriptWindow = CodingBotClient.Instance.ShowToolWindow(typeof(ScriptToolWindow));
+                    if (scriptWindow != null && scriptWindow is ScriptToolWindow)
+                    {
+                        string script = @"searchlog =
+    EXTRACT UID : int,
+            StartTime : DateTime,
+            Country : string,
+            Query : string,
+            Duration : int,
+            Urls : string,
+            ClickUrls : string
+";
+                        (scriptWindow as ScriptToolWindow).UpdateScript(script);
+                    }
+
+                    // Here should get TableStatus from bot
+                    var dataStatusWindow = CodingBotClient.Instance.ShowToolWindow(typeof(DataStatusToolWindow));
+                    if (dataStatusWindow != null && dataStatusWindow is DataStatusToolWindow)
+                    {
+                        (dataStatusWindow as DataStatusToolWindow).BindInputDataStatus(userData);
+                    }
                 });
             }
         }

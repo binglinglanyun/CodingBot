@@ -10,19 +10,40 @@ namespace CodingBot.Common
 {
     public static class ToolWindowHelper
     {
-        public static void ShowToolWindow(Package package, Type toolWindowType)
+        public static TWindowType DisplayToolWindow<TWindowType>(Package package, int id, bool create = true) where TWindowType : ToolWindowPane
         {
-            // Get the instance number 0 of this tool window. This window is single instance so this instance
-            // is actually the only one.
-            // The last flag is set to true so that if the tool window does not exists it will be created.
-            ToolWindowPane window = package.FindToolWindow(toolWindowType, 0, true);
-            if ((null == window) || (null == window.Frame))
+            TWindowType window = GetToolWindow<TWindowType>(package, id, create);
+            if (window == null)
             {
-                throw new NotSupportedException("Cannot create tool window");
+                return null;
             }
 
             IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
-            Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
+            return window;
+        }
+
+        public static TWindowType GetToolWindow<TWindowType>(Package package, int id, bool create = true) where TWindowType : ToolWindowPane
+        {
+            TWindowType window = package.FindToolWindow(typeof(TWindowType), id, create) as TWindowType;
+
+            if (TryFindToolWindow<TWindowType>(package, id, create, out window))
+            {
+                return window;
+            }
+
+            return null;
+        }
+
+        private static bool TryFindToolWindow<TWindowType>(Package package, int id, bool create, out TWindowType windowPane) where TWindowType : ToolWindowPane
+        {
+            windowPane = null;
+            try
+            {
+                windowPane = package.FindToolWindow(typeof(TWindowType), id, create) as TWindowType;
+            }
+            catch { }
+
+            return windowPane != null && windowPane.Frame != null;
         }
     }
 }

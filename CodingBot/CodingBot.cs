@@ -11,13 +11,14 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using CodingBot.ToolWindows;
 using CodingBot.Common;
+using CodingBot.ViewModels;
 
 namespace CodingBot
 {
     /// <summary>
     /// Command handler
     /// </summary>
-    internal sealed class CodingBot
+    internal sealed class CodingBotClient
     {
         /// <summary>
         /// Command ID.
@@ -39,7 +40,7 @@ namespace CodingBot
         /// Adds our command handlers for menu (commands must exist in the command table file)
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
-        private CodingBot(Package package)
+        private CodingBotClient(Package package)
         {
             if (package == null)
             {
@@ -60,7 +61,7 @@ namespace CodingBot
         /// <summary>
         /// Gets the instance of the command.
         /// </summary>
-        public static CodingBot Instance
+        public static CodingBotClient Instance
         {
             get;
             private set;
@@ -83,7 +84,7 @@ namespace CodingBot
         /// <param name="package">Owner package, not null.</param>
         public static void Initialize(Package package)
         {
-            Instance = new CodingBot(package);
+            Instance = new CodingBotClient(package);
         }
 
         /// <summary>
@@ -115,7 +116,7 @@ Let's start!";
             this.ShowToolWindow(typeof(ConversationToolWindow));
         }
 
-        public void ShowToolWindow(Type toolWindowType)
+        public ToolWindowPane ShowToolWindow(Type toolWindowType)
         {
             // Get the instance number 0 of this tool window. This window is single instance so this instance
             // is actually the only one.
@@ -128,6 +129,8 @@ Let's start!";
 
             IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
             Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
+
+            return window;
         }
     }
 }
