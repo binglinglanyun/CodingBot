@@ -1,4 +1,5 @@
-﻿using CodingBot.ToolWindows;
+﻿using CodingBot.Common;
+using CodingBot.ToolWindows;
 using CodingBot.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,14 @@ namespace CodingBot.Controls
         {
             InitializeComponent();
             this.DataContext = this;
+            this.UserDataViewModel.RegisterButtonClickEvent(onUserDataButtonClick);
+        }
+
+        #region Private functions
+        private void onUserDataButtonClick(object sender, EventArgs e)
+        {
+            this._userDataControl.Visibility = Visibility.Collapsed;
+            this.InputBoxVisibility = Visibility.Visible;
         }
 
         private void InputBoxEnter_Click(object sender, RoutedEventArgs e)
@@ -78,6 +87,7 @@ namespace CodingBot.Controls
             this._converdationScrollViewer.UpdateLayout();
             this._converdationScrollViewer.ScrollToVerticalOffset(_converdationScrollViewer.ScrollableHeight);
         }
+        #endregion
 
         #region Properties
         private UserDataControlViewModel _userDataViewModel = new UserDataControlViewModel();
@@ -127,6 +137,20 @@ namespace CodingBot.Controls
             {
                 _inputBoxText = value;
                 NotifyPropertyChanged("InputBoxText");
+            }
+        }
+
+        private Visibility _inputBoxVisibility = Visibility.Collapsed;
+        public Visibility InputBoxVisibility
+        {
+            get
+            {
+                return _inputBoxVisibility;
+            }
+            set
+            {
+                _inputBoxVisibility = value;
+                NotifyPropertyChanged("InputBoxVisibility");
             }
         }
         #endregion

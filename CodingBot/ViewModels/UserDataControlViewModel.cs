@@ -5,12 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace CodingBot.ViewModels
 {
     public class UserDataControlViewModel : ViewModelBase
     {
+        private event EventHandler<EventArgs> _buttonClickEventHandlers;
         private UserData GetUserData()
         {
             UserData userData = new UserData();
@@ -35,6 +37,29 @@ namespace CodingBot.ViewModels
             }
 
             return userData;
+        }
+
+        public void RegisterButtonClickEvent(EventHandler<EventArgs> eventHandler)
+        {
+            if (eventHandler == null)
+            {
+                throw new ArgumentNullException("eventHandler");
+            }
+
+            _buttonClickEventHandlers += eventHandler;
+        }
+
+        public void OnButtonClick(EventArgs eventArgs)
+        {
+            if (eventArgs == null)
+            {
+                throw new ArgumentNullException("eventArgs");
+            }
+
+            if (_buttonClickEventHandlers != null)
+            {
+                _buttonClickEventHandlers(this, eventArgs);
+            }
         }
 
         #region Properties
@@ -138,6 +163,8 @@ namespace CodingBot.ViewModels
                         (dataStatusWindow as DataStatusToolWindow).BindInputDataStatus(userData);
                         (dataStatusWindow as DataStatusToolWindow).BindTableDataStatus(tableItems);
                     }
+
+                    this.OnButtonClick(new EventArgs());
                 });
             }
         }
