@@ -7,18 +7,28 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Vertical" Margin="5,0,0,0">
+            <StackPanel.Resources>
+                <Style TargetType="TextBox">
+                    <Setter Property="ToolTip" Value="NOTE: Please use ';' to split mutiple paths"/>
+                    <Setter Property="MinHeight" Value="40"/>
+                    <Setter Property="Width" Value="250"/>
+                    <Setter Property="Foreground" Value="{DynamicResource VsBrush.WindowText}"/>
+                    <Setter Property="Background" Value="{DynamicResource VsBrush.Window}"/>
+                </Style>
+            </StackPanel.Resources>
+            <TextBlock Margin="0,5,0,0" Text="Please input your data:" />
             <TextBlock Margin="0,5,0,0" Text="Input Path:" />
-            <TextBox MinHeight="40" Text="{Binding InputPath}" />
+            <TextBox Text="{Binding InputPath}"/>
 
             <TextBlock Margin="0,5,0,0" Text="Output Path:" />
-            <TextBox MinHeight="40" Text="{Binding OutputPath}" />
+            <TextBox Text="{Binding OutputPath}"/>
 
             <TextBlock Margin="0,5,0,0" Text="Resource Path:" />
-            <TextBox MinHeight="40" Text="{Binding ResourcePath}" />
+            <TextBox Text="{Binding ResourcePath}"/>
 
             <TextBlock Margin="0,5,0,0" Text="Reference Path:" />
-            <TextBox MinHeight="40" Text="{Binding ReferencePath}" />
+            <TextBox Text="{Binding ReferencePath}"/>
 
             <Button Margin="3" Content="Ok" Command="{Binding OK_Click}" Width="40" Name="button1" HorizontalAlignment="Right"/>
         </StackPanel>   

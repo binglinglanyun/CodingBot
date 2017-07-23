@@ -10,20 +10,33 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <StackPanel Orientation="Vertical">
-            <Expander Header="Input Path" Margin="0,10,0,0" Foreground="{DynamicResource VsBrush.WindowText}">
-                <ListBox ItemsSource="{Binding InputPath}" />
+            <StackPanel.Resources>
+                <Style TargetType="ListBox">
+                    <Setter Property="Foreground" Value="{DynamicResource VsBrush.WindowText}"/>
+                    <Setter Property="Background" Value="{DynamicResource VsBrush.Window}"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Margin" Value="10,0,0,0"/>
+                </Style>
+                <Style TargetType="Expander">
+                    <Setter Property="Foreground" Value="{DynamicResource VsBrush.WindowText}"/>
+                    <Setter Property="Margin" Value="0,10,0,0"/>
+                    <Setter Property="IsExpanded" Value="True"/>
+                </Style>
+            </StackPanel.Resources>
+            <Expander Header="Input Path">
+                <ListBox ItemsSource="{Binding InputPath}"/>
             </Expander>
 
-            <Expander Header="Output Path" Margin="0,10,0,0" Foreground="{DynamicResource VsBrush.WindowText}">
-                <ListBox ItemsSource="{Binding OutputPath}" />
+            <Expander Header="Output Path">
+                <ListBox ItemsSource="{Binding OutputPath}"/>
             </Expander>
 
-            <Expander Header="Resource Path" Margin="0,10,0,0" Foreground="{DynamicResource VsBrush.WindowText}">
-                <ListBox ItemsSource="{Binding ResourcePath}" />
+            <Expander Header="Resource Path" >
+                <ListBox ItemsSource="{Binding ResourcePath}"/>
             </Expander>
 
-            <Expander Header="Reference Path" Margin="0,10,0,0" Foreground="{DynamicResource VsBrush.WindowText}">
-                <ListBox ItemsSource="{Binding ReferencePath}" />
+            <Expander Header="Reference Path" >
+                <ListBox ItemsSource="{Binding ReferencePath}"/>
             </Expander>
         </StackPanel>
     </Grid>
