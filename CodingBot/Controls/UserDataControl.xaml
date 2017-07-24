@@ -10,16 +10,17 @@
         <StackPanel Orientation="Vertical" Margin="5,0,0,0">
             <StackPanel.Resources>
                 <Style TargetType="TextBox">
-                    <Setter Property="ToolTip" Value="NOTE: Please use ';' to split mutiple paths"/>
+                    <Setter Property="ToolTip" Value="NOTE: Please click 'Enter' key in keyborad to split mutiple paths"/>
                     <Setter Property="MinHeight" Value="40"/>
                     <Setter Property="Width" Value="250"/>
                     <Setter Property="Foreground" Value="{DynamicResource VsBrush.WindowText}"/>
                     <Setter Property="Background" Value="{DynamicResource VsBrush.Window}"/>
+                    <Setter Property="AcceptsReturn" Value="True"/>
                 </Style>
             </StackPanel.Resources>
             <TextBlock Margin="0,5,0,0" Text="Please input your data:" />
             <TextBlock Margin="0,5,0,0" Text="Input Path:" />
-            <TextBox Text="{Binding InputPath}"/>
+            <TextBox Text="{Binding InputPath}" />
 
             <TextBlock Margin="0,5,0,0" Text="Output Path:" />
             <TextBox Text="{Binding OutputPath}"/>
