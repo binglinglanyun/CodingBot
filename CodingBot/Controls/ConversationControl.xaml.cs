@@ -89,7 +89,7 @@ namespace CodingBot.Controls
             }
         }
 
-        private void onSelecteRadioBoxClick(object sender, RoutedEventArgs args)
+        private void OnSelecteRadioBoxClick(object sender, RoutedEventArgs args)
         {
             Button button = sender as Button;
             if (button != null)
@@ -98,21 +98,6 @@ namespace CodingBot.Controls
                 this.IsRadioBoxEnabled = false;
                 
                 // Call bot server here
-            }
-        }
-
-
-        private bool _isRadioBoxEnabled = true;
-        public bool IsRadioBoxEnabled
-        {
-            get
-            {
-                return _isRadioBoxEnabled;
-            }
-            set
-            {
-                _isRadioBoxEnabled = value;
-                NotifyPropertyChanged("IsRadioBoxEnabled");
             }
         }
 
@@ -142,7 +127,7 @@ namespace CodingBot.Controls
                 button.Content = "Select";
                 button.Margin = new Thickness(0, 10, 0, 0);
                 button.HorizontalAlignment = HorizontalAlignment.Left;
-                button.Click += new RoutedEventHandler(onSelecteRadioBoxClick);
+                button.Click += new RoutedEventHandler(OnSelecteRadioBoxClick);
                 radioBoxPanel.Children.Add(button);
 
                 this._conversationDisplayRegion.Children.Add(radioBoxPanel);
@@ -289,6 +274,20 @@ namespace CodingBot.Controls
             {
                 _inputBoxVisibility = value;
                 NotifyPropertyChanged("InputBoxVisibility");
+            }
+        }
+
+        private bool _isRadioBoxEnabled = true;
+        public bool IsRadioBoxEnabled
+        {
+            get
+            {
+                return _isRadioBoxEnabled;
+            }
+            set
+            {
+                _isRadioBoxEnabled = value;
+                NotifyPropertyChanged("IsRadioBoxEnabled");
             }
         }
         #endregion
