@@ -15,7 +15,7 @@
                     <Setter Property="Foreground" Value="{DynamicResource VsBrush.WindowText}"/>
                     <Setter Property="Background" Value="{DynamicResource VsBrush.Window}"/>
                     <Setter Property="BorderThickness" Value="0"/>
-                    <Setter Property="Margin" Value="10,0,0,0"/>
+                    <Setter Property="Margin" Value="20,0,0,0"/>
                 </Style>
                 <Style TargetType="Expander">
                     <Setter Property="Foreground" Value="{DynamicResource VsBrush.WindowText}"/>

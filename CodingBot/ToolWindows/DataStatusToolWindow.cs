@@ -26,6 +26,15 @@ namespace CodingBot.ToolWindows
             this.Content = new DataStatusControl();
         }
 
+        protected override void OnClose()
+        {
+            base.OnClose();
+            if (this.Content != null)
+            {
+                this.Content = null;
+            }
+        }
+
         public void BindInputDataStatus(UserData userData)
         {
             (this.Content as DataStatusControl).BindInputDataStatus(userData);

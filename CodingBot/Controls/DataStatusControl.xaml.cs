@@ -47,6 +47,7 @@ namespace CodingBot.Controls
             if (tableItem != null)
             {
                 DataGrid dataGrid = new DataGrid();
+                dataGrid.Margin = new Thickness(20,0,20,0);
                 dataGrid.ItemsSource = tableItem.TableData;
                 dataGrid.LoadingRow += new EventHandler<DataGridRowEventArgs>(PreviewGrid_LoadingRow);
 

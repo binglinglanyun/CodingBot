@@ -15,25 +15,54 @@ namespace CodingBot.ViewModels
         private event EventHandler<EventArgs> _buttonClickEventHandlers;
         private UserData GetUserData()
         {
+            string separator = "\r\n";
             UserData userData = new UserData();
             if (!string.IsNullOrEmpty(this.InputPath))
             {
-                userData.InputPath = this.InputPath.Split(';').ToList();
+                List<string> inputPath = this.InputPath.Split(new string[] { separator }, StringSplitOptions.None).ToList();
+                foreach (string path in inputPath)
+                {
+                    if (!string.IsNullOrWhiteSpace(path))
+                    {
+                        userData.InputPath.Add(path);
+                    }
+                }
             }
 
             if (!string.IsNullOrEmpty(this.OutputPath))
             {
-                userData.OutputPath = this.OutputPath.Split(';').ToList();
+                List<string> outputPath = this.OutputPath.Split(new string[] { separator }, StringSplitOptions.None).ToList();
+                foreach (string path in outputPath)
+                {
+                    if (!string.IsNullOrWhiteSpace(path))
+                    {
+                        userData.OutputPath.Add(path);
+                    }
+                }
             }
 
             if (!string.IsNullOrEmpty(this.ResourcePath))
             {
-                userData.ResourcePath = this.ResourcePath.Split(';').ToList();
+                List<string> resourcePath = this.ResourcePath.Split(new string[] { separator }, StringSplitOptions.None).ToList();
+                foreach (string path in resourcePath)
+                {
+                    if (!string.IsNullOrWhiteSpace(path))
+                    {
+                        userData.ResourcePath.Add(path);
+                    }
+                }
             }
 
             if (!string.IsNullOrEmpty(this.ReferencePath))
             {
-                userData.ReferencePath = this.ReferencePath.Split(';').ToList();
+                List<string> referencePath = this.ReferencePath.Split(new string[] { separator }, StringSplitOptions.None).ToList();
+                foreach (string path in referencePath)
+                {
+                    if (!string.IsNullOrWhiteSpace(path))
+                    {
+                        userData.ReferencePath.Add(path);
+                    }
+                }
             }
 
             return userData;
