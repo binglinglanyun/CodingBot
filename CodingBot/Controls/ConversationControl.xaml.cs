@@ -25,7 +25,8 @@ namespace CodingBot.Controls
     public partial class ConversationControl : UserControl, INotifyPropertyChanged
     {
         private const double c_maxConversationBoxWidth = 250;
-        private List<string> _requestData = new List<string>();
+        private List<string> _radioBoxData = new List<string>();
+        private List<string> _checkBoxData = new List<string>();
         public ConversationControl()
         {
             InitializeComponent();
@@ -78,18 +79,37 @@ namespace CodingBot.Controls
             ScrollToEnd();
         }
 
-        private void SelecteRadioBox(object sender, RoutedEventArgs args)
+        private void CheckRadioBox(object sender, RoutedEventArgs args)
         {
             RadioButton radioButton = sender as RadioButton;
             if (radioButton != null && radioButton.IsChecked == true)
             {
                 List<string> requestData = new List<string>();
                 requestData.Add(radioButton.Content.ToString());
-                this._requestData = requestData;
+                this._radioBoxData = requestData;
             }
         }
 
-        private void OnSelecteRadioBoxClick(object sender, RoutedEventArgs args)
+        private void CheckOrUncheckCheckBox(object sender, RoutedEventArgs args)
+        {
+            CheckBox checkBox = sender as CheckBox;
+            if (checkBox != null)
+            {
+                if (checkBox.IsChecked == true)
+                {
+                    this._checkBoxData.Add(checkBox.Content.ToString());
+                }
+                else
+                {
+                    if (this._checkBoxData.Contains(checkBox.Content.ToString()))
+                    {
+                        this._checkBoxData.Remove(checkBox.Content.ToString());
+                    }
+                }
+            }
+        }
+
+        private void OnSelectRadioBoxClick(object sender, RoutedEventArgs args)
         {
             Button button = sender as Button;
             if (button != null)
@@ -97,6 +117,18 @@ namespace CodingBot.Controls
                 button.IsEnabled = false;
                 this.IsRadioBoxEnabled = false;
                 
+                // Call bot server here
+            }
+        }
+
+        private void OnSelectCheckBoxClick(object sender, RoutedEventArgs args)
+        {
+            Button button = sender as Button;
+            if (button != null)
+            {
+                button.IsEnabled = false;
+                this.IsCheckBoxEnabled = false;
+
                 // Call bot server here
             }
         }
@@ -117,7 +149,7 @@ namespace CodingBot.Controls
                     radiobutton.Margin = new Thickness(0, 3, 0, 0);
                     radiobutton.Content = tableItem.TableName;
                     radiobutton.Foreground = this.Foreground;
-                    radiobutton.Checked += SelecteRadioBox;
+                    radiobutton.Checked += CheckRadioBox;
                     Binding isEnableBinding = new Binding("IsRadioBoxEnabled");
                     radioBoxPanel.SetBinding(RadioButton.IsEnabledProperty, isEnableBinding);
                     radioBoxPanel.Children.Add(radiobutton);
@@ -127,7 +159,7 @@ namespace CodingBot.Controls
                 button.Content = "Select";
                 button.Margin = new Thickness(0, 10, 0, 0);
                 button.HorizontalAlignment = HorizontalAlignment.Left;
-                button.Click += new RoutedEventHandler(OnSelecteRadioBoxClick);
+                button.Click += new RoutedEventHandler(OnSelectRadioBoxClick);
                 radioBoxPanel.Children.Add(button);
 
                 this._conversationDisplayRegion.Children.Add(radioBoxPanel);
@@ -139,7 +171,35 @@ namespace CodingBot.Controls
         {
             if (tableItems != null)
             {
+                this.IsCheckBoxEnabled = true;
+                this._checkBoxData = new List<string>();
+                StackPanel checkBoxPanel = new StackPanel();
+                checkBoxPanel.Orientation = Orientation.Vertical;
+                checkBoxPanel.HorizontalAlignment = HorizontalAlignment.Left;
+                checkBoxPanel.Width = c_maxConversationBoxWidth;
+                checkBoxPanel.Margin = new Thickness(10, 5, 5, 0);
+                foreach (var tableItem in tableItems)
+                {
+                    CheckBox checkBox = new CheckBox();
+                    checkBox.Margin = new Thickness(0, 3, 0, 0);
+                    checkBox.Content = tableItem.TableName;
+                    checkBox.Foreground = this.Foreground;
+                    checkBox.Checked += CheckOrUncheckCheckBox;
+                    checkBox.Unchecked += CheckOrUncheckCheckBox;
+                    Binding isEnableBinding = new Binding("IsCheckBoxEnabled");
+                    checkBoxPanel.SetBinding(RadioButton.IsEnabledProperty, isEnableBinding);
+                    checkBoxPanel.Children.Add(checkBox);
+                }
 
+                Button button = new Button();
+                button.Content = "Select";
+                button.Margin = new Thickness(0, 10, 0, 0);
+                button.HorizontalAlignment = HorizontalAlignment.Left;
+                button.Click += new RoutedEventHandler(OnSelectCheckBoxClick);
+                checkBoxPanel.Children.Add(button);
+
+                this._conversationDisplayRegion.Children.Add(checkBoxPanel);
+                ScrollToEnd();
             }
         }
 
@@ -185,7 +245,7 @@ namespace CodingBot.Controls
             ResponseData responseData = new ResponseData();
             responseData.BotMessage = @"Hello, Dear User,Hello, Dear User,Hello,Hello, Dear User,Hello, Dear User, Hello, Dear User, Hello, Dear User,Hello, Dear User";
 
-            responseData.TableOperation = TableOperationType.ShowRadioBox;
+            responseData.TableOperation = TableOperationType.ShowCheckBox;
             List<TableItem> tableItems = new List<TableItem>();
             for (int j = 0; j < 2; j++)
             {
@@ -288,6 +348,20 @@ namespace CodingBot.Controls
             {
                 _isRadioBoxEnabled = value;
                 NotifyPropertyChanged("IsRadioBoxEnabled");
+            }
+        }
+
+        private bool _isCheckBoxEnabled = true;
+        public bool IsCheckBoxEnabled
+        {
+            get
+            {
+                return _isCheckBoxEnabled;
+            }
+            set
+            {
+                _isCheckBoxEnabled = value;
+                NotifyPropertyChanged("IsCheckBoxEnabled");
             }
         }
         #endregion
