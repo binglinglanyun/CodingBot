@@ -12,7 +12,7 @@ namespace CodingBot.ViewModels
 {
     public class UserDataControlViewModel : ViewModelBase
     {
-        private event EventHandler<EventArgs> _buttonClickEventHandlers;
+        #region Private Methods
         private UserData GetUserData()
         {
             string separator = "\r\n";
@@ -68,6 +68,43 @@ namespace CodingBot.ViewModels
             return userData;
         }
 
+        private ResponseData GetFakeResponseData()
+        {
+            ResponseData responseData = new ResponseData();
+
+            responseData.BotMessage = "What do you want to do?";
+
+            responseData.SciptContent = @"searchlog =
+    EXTRACT UID : int,
+            StartTime : DateTime,
+            Country : string,
+            Query : string,
+            Duration : int,
+            Urls : string,
+            ClickUrls : string";
+
+            List<TableItem> tableItems = new List<TableItem>();
+            for (int j = 0; j < 2; j++)
+            {
+                TableItem tableItem = new TableItem();
+                tableItem.TableName = "Table Item" + j;
+                for (int i = 0; i < 4; i++)
+                {
+                    tableItem.TableData.Add(new RowItem("xnl", "zhiwjia"));
+                }
+
+                tableItems.Add(tableItem);
+            }
+
+            responseData.TableItems = tableItems;
+
+            return responseData;
+        }
+        #endregion
+
+        #region Public Methods
+        private event EventHandler<EventArgs> _buttonClickEventHandlers;
+
         public void RegisterButtonClickEvent(EventHandler<EventArgs> eventHandler)
         {
             if (eventHandler == null)
@@ -90,6 +127,7 @@ namespace CodingBot.ViewModels
                 _buttonClickEventHandlers(this, eventArgs);
             }
         }
+        #endregion
 
         #region Properties
         private string _inputpath;
@@ -157,40 +195,26 @@ namespace CodingBot.ViewModels
                     UserData userData = GetUserData();
 
                     // Here should get Script from bot
+                    // Here should get TableStatus from bot
+                    ResponseData responseData = GetFakeResponseData();
+
                     var scriptWindow = CodingBotClient.Instance.ShowToolWindow(typeof(ScriptToolWindow));
                     if (scriptWindow != null && scriptWindow is ScriptToolWindow)
                     {
-                        string script = @"searchlog =
-    EXTRACT UID : int,
-            StartTime : DateTime,
-            Country : string,
-            Query : string,
-            Duration : int,
-            Urls : string,
-            ClickUrls : string
-";
-                        (scriptWindow as ScriptToolWindow).UpdateScript(script);
+                        (scriptWindow as ScriptToolWindow).UpdateScript(responseData.SciptContent);
                     }
 
-                    // Here should get TableStatus from bot
-                    List<TableItem> tableItems = new List<TableItem>();
-                    for (int j = 0; j < 2; j++)
+                    var conversationWindow = CodingBotClient.Instance.ShowToolWindow(typeof(ConversationToolWindow));
+                    if (conversationWindow != null && conversationWindow is ConversationToolWindow)
                     {
-                        TableItem tableItem = new TableItem();
-                        tableItem.TableName = "Table Item" + j;
-                        for (int i = 0; i < 4; i++)
-                        {
-                            tableItem.TableData.Add(new RowItem("xnl", "yunying"));
-                        }
-                        
-                        tableItems.Add(tableItem);
+                        (conversationWindow as ConversationToolWindow).UpdateBotMessage(responseData.BotMessage);
                     }
-                    
+
                     var dataStatusWindow = CodingBotClient.Instance.ShowToolWindow(typeof(DataStatusToolWindow));
                     if (dataStatusWindow != null && dataStatusWindow is DataStatusToolWindow)
                     {
                         (dataStatusWindow as DataStatusToolWindow).BindInputDataStatus(userData);
-                        (dataStatusWindow as DataStatusToolWindow).BindTableDataStatus(tableItems);
+                        (dataStatusWindow as DataStatusToolWindow).BindTableDataStatus(responseData.TableItems);
                     }
 
                     this.OnButtonClick(new EventArgs());
