@@ -31,7 +31,7 @@ namespace CodingBot.ToolWindows
             var control = this.Content as ConversationControl;
             if (control != null)
             {
-                control.ShowBotQuestionInConversation(botMessage);
+                control.ShowBotMessageInConversation(botMessage);
             }
         }
 

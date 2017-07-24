@@ -53,7 +53,7 @@ namespace CodingBot.Controls
 
                 Expander expander = new Expander() { Header = tableItem.TableName };
                 expander.Margin = new Thickness(0,10,0,0);
-                expander.Foreground = new SolidColorBrush(Colors.White);
+                expander.Foreground = this.Foreground;
                 expander.Content = dataGrid;
 
                 this._tableStatus.Children.Add(expander);
