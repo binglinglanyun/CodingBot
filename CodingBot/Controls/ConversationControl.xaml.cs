@@ -31,6 +31,18 @@ namespace CodingBot.Controls
             this.UserDataViewModel.RegisterButtonClickEvent(onUserDataButtonClick);
         }
 
+        #region Public Methods
+        public void ShowBotQuestionInConversation(string message)
+        {
+            TextBlock textBlock = new TextBlock();
+            textBlock.Text = message;
+            textBlock.HorizontalAlignment = HorizontalAlignment.Left;
+            textBlock.Margin = new Thickness(5, 5, 0, 0);
+            this._conversationDisplayRegion.Children.Add(textBlock);
+            ScrollToEnd();
+        }
+        #endregion
+
         #region Private functions
         private void onUserDataButtonClick(object sender, EventArgs e)
         {
@@ -63,16 +75,6 @@ namespace CodingBot.Controls
             textBlock.Text = this.InputBoxText;
             textBlock.HorizontalAlignment = HorizontalAlignment.Right;
             textBlock.Margin = new Thickness(0, 5, 5, 0);
-            this._conversationDisplayRegion.Children.Add(textBlock);
-            ScrollToEnd();
-        }
-
-        private void ShowBotQuestionInConversation(string message)
-        {
-            TextBlock textBlock = new TextBlock();
-            textBlock.Text = message;
-            textBlock.HorizontalAlignment = HorizontalAlignment.Left;
-            textBlock.Margin = new Thickness(5, 5, 0, 0);
             this._conversationDisplayRegion.Children.Add(textBlock);
             ScrollToEnd();
         }

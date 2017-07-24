@@ -26,6 +26,15 @@ namespace CodingBot.ToolWindows
             this.Content = new ConversationControl();
         }
 
+        public void UpdateBotMessage(string botMessage)
+        {
+            var control = this.Content as ConversationControl;
+            if (control != null)
+            {
+                control.ShowBotQuestionInConversation(botMessage);
+            }
+        }
+
         protected override void OnClose()
         {
             base.OnClose();
