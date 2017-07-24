@@ -18,22 +18,50 @@ namespace CodingBot.ViewModels
             UserData userData = new UserData();
             if (!string.IsNullOrEmpty(this.InputPath))
             {
-                userData.InputPath = this.InputPath.Split(';').ToList();
+                List<string> inputPath = this.InputPath.Split(';').ToList();
+                foreach (string path in inputPath)
+                {
+                    if (!string.IsNullOrWhiteSpace(path))
+                    {
+                        userData.InputPath.Add(path);
+                    }
+                }
             }
 
             if (!string.IsNullOrEmpty(this.OutputPath))
             {
-                userData.OutputPath = this.OutputPath.Split(';').ToList();
+                List<string> outputPath = this.OutputPath.Split(';').ToList();
+                foreach (string path in outputPath)
+                {
+                    if (!string.IsNullOrWhiteSpace(path))
+                    {
+                        userData.OutputPath.Add(path);
+                    }
+                }
             }
 
             if (!string.IsNullOrEmpty(this.ResourcePath))
             {
-                userData.ResourcePath = this.ResourcePath.Split(';').ToList();
+                List<string> resourcePath = this.ResourcePath.Split(';').ToList();
+                foreach (string path in resourcePath)
+                {
+                    if (!string.IsNullOrWhiteSpace(path))
+                    {
+                        userData.ResourcePath.Add(path);
+                    }
+                }
             }
 
             if (!string.IsNullOrEmpty(this.ReferencePath))
             {
-                userData.ReferencePath = this.ReferencePath.Split(';').ToList();
+                List<string> referencePath = this.ReferencePath.Split(';').ToList();
+                foreach (string path in referencePath)
+                {
+                    if (!string.IsNullOrWhiteSpace(path))
+                    {
+                        userData.ReferencePath.Add(path);
+                    }
+                }
             }
 
             return userData;
