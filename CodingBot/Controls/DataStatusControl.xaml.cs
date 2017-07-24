@@ -35,6 +35,7 @@ namespace CodingBot.Controls
         {
             if (tableItems != null)
             {
+                this._tableStatus.Children.Clear();
                 foreach (var tableItem in tableItems)
                 {
                     GenerateTableData(tableItem);
