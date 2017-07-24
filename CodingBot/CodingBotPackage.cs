@@ -41,9 +41,9 @@ namespace CodingBot
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(CodingBotPackage.PackageGuidString)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
-    [ProvideToolWindow(typeof(ConversationToolWindow))]
-    [ProvideToolWindow(typeof(ScriptToolWindow))]
-    [ProvideToolWindow(typeof(DataStatusToolWindow))]
+    [ProvideToolWindow(typeof(ConversationToolWindow), MultiInstances = true)]
+    [ProvideToolWindow(typeof(ScriptToolWindow), MultiInstances = true)]
+    [ProvideToolWindow(typeof(DataStatusToolWindow), MultiInstances = true)]
     public sealed class CodingBotPackage : Package
     {
         /// <summary>

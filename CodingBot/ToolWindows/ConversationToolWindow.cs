@@ -25,5 +25,14 @@ namespace CodingBot.ToolWindows
             // the object returned by the Content property.
             this.Content = new ConversationControl();
         }
+
+        protected override void OnClose()
+        {
+            base.OnClose();
+            if (this.Content != null)
+            {
+                this.Content = null;
+            }
+        }
     }
 }
