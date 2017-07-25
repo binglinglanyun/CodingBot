@@ -194,9 +194,7 @@ namespace CodingBot.ViewModels
                 {
                     UserData userData = GetUserData();
 
-                    // Here should get Script from bot
-                    // Here should get TableStatus from bot
-                    ResponseData responseData = GetFakeResponseData();
+                    ResponseData responseData = CodingBotClient.Instance.BotServer.InitializeUserInputData(userData);
 
                     var scriptWindow = CodingBotClient.Instance.ShowToolWindow(typeof(ScriptToolWindow));
                     if (scriptWindow != null && scriptWindow is ScriptToolWindow)
