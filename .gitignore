@@ -1,3 +1,4 @@
-CodingBot/bin/
+CodingBot/bin/Debug
+CodingBot/bin/Release
 CodingBot/obj/
 .vs/
