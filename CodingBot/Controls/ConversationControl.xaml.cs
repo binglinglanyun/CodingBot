@@ -27,6 +27,8 @@ namespace CodingBot.Controls
         private const double c_maxConversationBoxWidth = 250;
         private List<string> _radioBoxData = new List<string>();
         private List<string> _checkBoxData = new List<string>();
+        private List<List<string>> _multiComboBoxData = new List<List<string>>();
+        List<TableItem> _multiComboBoxTableItems = new List<TableItem>();
         public ConversationControl()
         {
             InitializeComponent();
@@ -34,7 +36,6 @@ namespace CodingBot.Controls
             this.UserDataViewModel.RegisterButtonClickEvent(onUserDataButtonClick);
         }
 
-        #region Private functions
         private void onUserDataButtonClick(object sender, EventArgs e)
         {
             this._userDataControl.Visibility = Visibility.Collapsed;
@@ -55,30 +56,7 @@ namespace CodingBot.Controls
             }
         }
 
-        public void ShowBotMessageInConversation(string message)
-        {
-            TextBlock textBlock = new TextBlock();
-            textBlock.Text = message;
-            textBlock.TextWrapping = TextWrapping.Wrap;
-            textBlock.HorizontalAlignment = HorizontalAlignment.Left;
-            textBlock.MaxWidth = c_maxConversationBoxWidth;
-            textBlock.Margin = new Thickness(5, 5, 0, 0);
-            this._conversationDisplayRegion.Children.Add(textBlock);
-            ScrollToEnd();
-        }
-
-        private void ShowUserMessageInConversation()
-        {
-            TextBlock textBlock = new TextBlock();
-            textBlock.Text = this.InputBoxText;
-            textBlock.TextWrapping = TextWrapping.Wrap;
-            textBlock.MaxWidth = c_maxConversationBoxWidth;
-            textBlock.HorizontalAlignment = HorizontalAlignment.Right;
-            textBlock.Margin = new Thickness(0, 5, 5, 0);
-            this._conversationDisplayRegion.Children.Add(textBlock);
-            ScrollToEnd();
-        }
-
+        #region Button Click
         private void CheckRadioBox(object sender, RoutedEventArgs args)
         {
             RadioButton radioButton = sender as RadioButton;
@@ -115,8 +93,18 @@ namespace CodingBot.Controls
             if (button != null)
             {
                 button.IsEnabled = false;
-                this.IsRadioBoxEnabled = false;
-                
+                var stackPanel = button.Parent as StackPanel;
+                if (stackPanel != null && stackPanel.Children != null)
+                {
+                    foreach (var child in stackPanel.Children)
+                    {
+                        var radioButton = child as RadioButton;
+                        if (radioButton != null)
+                        {
+                            radioButton.IsEnabled = false;
+                        }
+                    }
+                }
                 // Call bot server here
             }
         }
@@ -127,17 +115,123 @@ namespace CodingBot.Controls
             if (button != null)
             {
                 button.IsEnabled = false;
-                this.IsCheckBoxEnabled = false;
+                var stackPanel = button.Parent as StackPanel;
+                if (stackPanel != null && stackPanel.Children != null)
+                {
+                    foreach (var child in stackPanel.Children)
+                    {
+                        var checkBox = child as CheckBox;
+                        if (checkBox != null)
+                        {
+                            checkBox.IsEnabled = false;
+                        }
+                    }
+                }
 
                 // Call bot server here
             }
+        }
+
+        private void OnAddMoreButtonClick(object sender, RoutedEventArgs args)
+        {
+            Button button = sender as Button;
+            if (button != null)
+            {
+                var buttonPanel = button.Parent as StackPanel;
+                if (buttonPanel != null)
+                {
+                    var comboBoxPanel = buttonPanel.Parent as StackPanel;
+                    if (comboBoxPanel != null && comboBoxPanel.Children != null)
+                    {
+                        StackPanel keyPairPanel = CreateKeyPairPanel();
+                        // Remove buttonPanel first to let buttonPanel at the end
+                        comboBoxPanel.Children.Remove(buttonPanel);
+                        comboBoxPanel.Children.Add(keyPairPanel);
+                        comboBoxPanel.Children.Add(buttonPanel);
+                    }
+                }
+
+                ScrollToEnd();
+            }
+        }
+
+        private void OnFinishButtonClick(object sender, RoutedEventArgs args)
+        {
+            Button finishButton = sender as Button;
+            if (finishButton != null)
+            {
+                var buttonPanel = finishButton.Parent as StackPanel;
+                var comboBoxPanel = buttonPanel?.Parent as StackPanel;
+                if (comboBoxPanel != null)
+                {
+                    List<List<string>> multiComboBoxData = new List<List<string>>();
+                    foreach (var comboBoxPanelChild in comboBoxPanel.Children)
+                    {
+                        var stackPanel = comboBoxPanelChild as StackPanel;
+                        if (stackPanel != null)
+                        {
+                            List<string> keyPair = new List<string>();
+                            foreach (var child in stackPanel.Children)
+                            {
+                                var comboBox = child as ComboBox;
+                                if (comboBox != null)
+                                {
+                                    comboBox.IsEnabled = false;
+                                    var item = comboBox.SelectedItem as ComboBoxItem;
+                                    keyPair.Add(item.Content.ToString());
+                                }
+
+                                var button = child as Button;
+                                if (button != null)
+                                {
+                                    button.IsEnabled = false;
+                                }
+                            }
+
+                            if (keyPair.Any())
+                            {
+                                multiComboBoxData.Add(keyPair);
+                            }
+                        }
+                    }
+
+                    this._multiComboBoxData = multiComboBoxData;
+                }
+
+                // Call bot server here
+            }
+        }
+        #endregion
+
+        #region Show Content in Conversation functions
+        public void ShowBotMessageInConversation(string message)
+        {
+            TextBlock textBlock = new TextBlock();
+            textBlock.Text = message;
+            textBlock.TextWrapping = TextWrapping.Wrap;
+            textBlock.HorizontalAlignment = HorizontalAlignment.Left;
+            textBlock.MaxWidth = c_maxConversationBoxWidth;
+            textBlock.Margin = new Thickness(5, 5, 0, 0);
+            this._conversationDisplayRegion.Children.Add(textBlock);
+            ScrollToEnd();
+        }
+
+        private void ShowUserMessageInConversation()
+        {
+            TextBlock textBlock = new TextBlock();
+            textBlock.Text = this.InputBoxText;
+            textBlock.TextWrapping = TextWrapping.Wrap;
+            textBlock.MaxWidth = c_maxConversationBoxWidth;
+            textBlock.HorizontalAlignment = HorizontalAlignment.Right;
+            textBlock.Margin = new Thickness(0, 5, 5, 0);
+            this._conversationDisplayRegion.Children.Add(textBlock);
+            ScrollToEnd();
         }
 
         private void ShowRadioBoxInConversation(List<TableItem> tableItems)
         {
             if (tableItems != null)
             {
-                this.IsRadioBoxEnabled = true;
                 StackPanel radioBoxPanel = new StackPanel();
                 radioBoxPanel.Orientation = Orientation.Vertical;
                 radioBoxPanel.HorizontalAlignment = HorizontalAlignment.Left;
@@ -150,8 +244,6 @@ namespace CodingBot.Controls
                     radiobutton.Content = tableItem.TableName;
                     radiobutton.Foreground = this.Foreground;
                     radiobutton.Checked += CheckRadioBox;
-                    Binding isEnableBinding = new Binding("IsRadioBoxEnabled");
-                    radioBoxPanel.SetBinding(RadioButton.IsEnabledProperty, isEnableBinding);
                     radioBoxPanel.Children.Add(radiobutton);
                 }
 
@@ -171,7 +263,6 @@ namespace CodingBot.Controls
         {
             if (tableItems != null)
             {
-                this.IsCheckBoxEnabled = true;
                 this._checkBoxData = new List<string>();
                 StackPanel checkBoxPanel = new StackPanel();
                 checkBoxPanel.Orientation = Orientation.Vertical;
@@ -186,8 +277,6 @@ namespace CodingBot.Controls
                     checkBox.Foreground = this.Foreground;
                     checkBox.Checked += CheckOrUncheckCheckBox;
                     checkBox.Unchecked += CheckOrUncheckCheckBox;
-                    Binding isEnableBinding = new Binding("IsCheckBoxEnabled");
-                    checkBoxPanel.SetBinding(RadioButton.IsEnabledProperty, isEnableBinding);
                     checkBoxPanel.Children.Add(checkBox);
                 }
 
@@ -203,11 +292,71 @@ namespace CodingBot.Controls
             }
         }
 
-        private void ShowMutiCheckBoxInConversation(List<TableItem> tableItems)
+        private StackPanel CreateKeyPairPanel()
+        {
+            
+            StackPanel keyPairPanel = new StackPanel();
+            keyPairPanel.Orientation = Orientation.Horizontal;
+            keyPairPanel.Margin = new Thickness(0,5,0,5);
+            TextBlock textBlock = new TextBlock();
+            textBlock.VerticalAlignment = VerticalAlignment.Center;
+            textBlock.Text = "Key Pair:";
+            keyPairPanel.Children.Add(textBlock);
+            foreach (var tableItem in _multiComboBoxTableItems)
+            {
+                ComboBox comboBox = new ComboBox();
+                comboBox.SelectedIndex = 0;
+                comboBox.Margin = new Thickness(10, 0, 0, 0);
+                foreach (var rowItem in tableItem.TableData)
+                {
+                    if (rowItem != null)
+                    {
+                        ComboBoxItem comboBoxItem = new ComboBoxItem();
+                        comboBoxItem.Content = string.Format("{0}({1})", rowItem.ColumnName, rowItem.DataType);
+                        comboBox.Items.Add(comboBoxItem);
+                    }  
+                }
+
+                keyPairPanel.Children.Add(comboBox);
+            }
+
+            return keyPairPanel;
+        }
+
+        private void ShowMutiComboBoxInConversation(List<TableItem> tableItems)
         {
             if (tableItems != null)
             {
+                this._multiComboBoxTableItems = tableItems;
+                // Mutiple combobox panel
+                StackPanel comboBoxPanel = new StackPanel();
+                comboBoxPanel.Orientation = Orientation.Vertical;
+                comboBoxPanel.HorizontalAlignment = HorizontalAlignment.Left;
+                comboBoxPanel.Width = c_maxConversationBoxWidth;
+                comboBoxPanel.Margin = new Thickness(10, 5, 5, 0);
 
+                // Key pair panel
+                StackPanel keyPairPanel = CreateKeyPairPanel();
+
+                // Button panel                
+                StackPanel buttonPanel = new StackPanel();
+                buttonPanel.Orientation = Orientation.Horizontal;
+                Button addMoreButton = new Button();
+                addMoreButton.Content = "Add Key Pair";
+                addMoreButton.Click += new RoutedEventHandler(OnAddMoreButtonClick);
+                buttonPanel.Children.Add(addMoreButton);
+
+                Button finishButton = new Button();
+                finishButton.Content = "Finish";
+                finishButton.Margin = new Thickness(10,0,0,0);
+                finishButton.Click += new RoutedEventHandler(OnFinishButtonClick);
+                buttonPanel.Children.Add(finishButton);
+
+                comboBoxPanel.Children.Add(keyPairPanel);
+                comboBoxPanel.Children.Add(buttonPanel);
+
+                this._conversationDisplayRegion.Children.Add(comboBoxPanel);
+                ScrollToEnd();
             }
         }
 
@@ -235,14 +384,15 @@ namespace CodingBot.Controls
                 case TableOperationType.ShowCheckBox:
                     ShowCheckBoxInConversation(responseData.TableItems);
                     break;
-                case TableOperationType.ShowMultiCheckBox:
-                    ShowMutiCheckBoxInConversation(responseData.TableItems);
+                case TableOperationType.ShowMultiComboBox:
+                    ShowMutiComboBoxInConversation(responseData.TableItems);
                     break;
                 case TableOperationType.UpdateDataStatus:
                     UpdateUpdateDataStatus(responseData.TableItems);
                     break;
             }
         }
+        #endregion
 
         int cycle = 0;
         private ResponseData GetFakeResponseData()
@@ -260,7 +410,7 @@ namespace CodingBot.Controls
             }
             if (cycle % 4 == 2)
             {
-                responseData.TableOperation = TableOperationType.ShowMultiCheckBox;
+                responseData.TableOperation = TableOperationType.ShowMultiComboBox;
             }
             if (cycle % 4 == 3)
             {
@@ -292,13 +442,11 @@ namespace CodingBot.Controls
             return responseData;
         }
 
-
         private void ScrollToEnd()
         {
             this._converdationScrollViewer.UpdateLayout();
             this._converdationScrollViewer.ScrollToVerticalOffset(_converdationScrollViewer.ScrollableHeight);
         }
-        #endregion
 
         #region Properties
         private UserDataControlViewModel _userDataViewModel = new UserDataControlViewModel();
@@ -362,34 +510,6 @@ namespace CodingBot.Controls
             {
                 _inputBoxVisibility = value;
                 NotifyPropertyChanged("InputBoxVisibility");
-            }
-        }
-
-        private bool _isRadioBoxEnabled = true;
-        public bool IsRadioBoxEnabled
-        {
-            get
-            {
-                return _isRadioBoxEnabled;
-            }
-            set
-            {
-                _isRadioBoxEnabled = value;
-                NotifyPropertyChanged("IsRadioBoxEnabled");
-            }
-        }
-
-        private bool _isCheckBoxEnabled = true;
-        public bool IsCheckBoxEnabled
-        {
-            get
-            {
-                return _isCheckBoxEnabled;
-            }
-            set
-            {
-                _isCheckBoxEnabled = value;
-                NotifyPropertyChanged("IsCheckBoxEnabled");
             }
         }
         #endregion
