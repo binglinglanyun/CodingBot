@@ -49,6 +49,9 @@ namespace CodingBot
 
             this.package = package;
 
+            BotServer = new Bot();
+            BotServer.Init();
+
             OleMenuCommandService commandService = this.ServiceProvider.GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             if (commandService != null)
             {
@@ -62,6 +65,12 @@ namespace CodingBot
         /// Gets the instance of the command.
         /// </summary>
         public static CodingBotClient Instance
+        {
+            get;
+            private set;
+        }
+
+        public Bot BotServer
         {
             get;
             private set;
