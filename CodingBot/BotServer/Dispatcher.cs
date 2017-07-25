@@ -15,7 +15,7 @@ namespace CodingBot
             m_Issue = new Issue();
             //m_nPreviousState = 0; // Idle
         }
-        
+
         /// <summary>
         /// Parsing user input, and save the parsing result in m_Issue
         /// </summary>
@@ -41,7 +41,7 @@ namespace CodingBot
 
         }
 
- 
+
         // Dialogue state
         public byte m_nPreviousState;
 

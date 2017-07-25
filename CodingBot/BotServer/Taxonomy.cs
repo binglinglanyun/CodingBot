@@ -29,7 +29,7 @@ namespace CodingBot
                 nextnode = getRootNode(ref issue);
                 issue.IsSessionStart = false;
             }
-            else 
+            else
             {
                 // input desc and themeid, get nextnode and update the keywords
                 nextnode = getNextOneNode(ref issue);
@@ -42,7 +42,7 @@ namespace CodingBot
                 question = "Please correct your input";
                 responseData.BotMessage = question;
             }
-            else if(nextnode == 1)
+            else if (nextnode == 1)
             {
                 // workflow completed! Need to generate code
                 question += "Code Generation Completed!\n\n";
@@ -52,10 +52,10 @@ namespace CodingBot
                 // parsed multiple table: union, join, except, combine
 
                 question += "1. Filter\t2. PROCESS\t3. REDUCE\t4.AGGREGATE\t5.CROSS APPLY\n";
-                if(issue.AllTableItems.Count > 1)
+                if (issue.AllTableItems.Count > 1)
                 {
                     question += "6. UNION\t7.JOIN\t8.EXCEPT\t9.COMBINE\n";
-                    
+
                 }
                 question += "Or just input what you need:";
 
@@ -68,19 +68,19 @@ namespace CodingBot
             else
             {
                 //TODO: if nextnode is suboperation of join or aggregate, we need to update the issue.Suboperation field
-                if(nextnode == 105001 || nextnode == 102001)
+                if (nextnode == 105001 || nextnode == 102001)
                 {
                     issue.SubOperation = issue.m_lDesc.Last();
                 }
 
                 //TODO: remenber users's input, such as filter/APPLY
-                if(nextnode == 101002 || nextnode == 106002 || nextnode == 107002 || nextnode == 108002 || nextnode == 109002)
+                if (nextnode == 101002 || nextnode == 106002 || nextnode == 107002 || nextnode == 108002 || nextnode == 109002)
                 {
                     issue.FilterCondition = issue.m_lDesc.Last();
                 }
                 question = Resource.m_DTopicTree[nextnode].Item4;
                 responseData.BotMessage = question;
-                if(Resource.m_DTopicTree[nextnode].Item5 != 0)
+                if (Resource.m_DTopicTree[nextnode].Item5 != 0)
                 {
                     // special operation:
 
@@ -119,13 +119,13 @@ namespace CodingBot
 
 
             }
-                
+
 
             issue.m_nCurrentTopicId = nextnode; //update currentid
             return responseData;
         }
 
-     
+
 
         //input desc and themeid, return nextnode and update the keywords
         public int getNextOneNode(ref Issue issue)
@@ -133,7 +133,7 @@ namespace CodingBot
             List<int> subNodes = getAllChildren(issue.m_nCurrentTopicId);
 
 
-            if(subNodes.Count == 1)
+            if (subNodes.Count == 1)
             {
                 return subNodes[0];
             }
@@ -142,7 +142,7 @@ namespace CodingBot
                 int matchedNode = MatchKeyword(issue.m_lDesc.Last(), issue.m_nCurrentTopicId);
                 return matchedNode;
             }
-            
+
 
         }
 
@@ -167,8 +167,8 @@ namespace CodingBot
                     wordNgramlist.Add(words[i + j]);
                     k++;
                 }
-            
-                
+
+
                 do
                 {
                     string wordNgram = List2String(wordNgramlist);
@@ -244,7 +244,7 @@ namespace CodingBot
             string SubOperation = issue.SubOperation;
 
             List<List<List<string>>> Tables = new List<List<List<string>>>();
-            foreach(TableItem tableItem in issue.SelectedTableItems)
+            foreach (TableItem tableItem in issue.SelectedTableItems)
             {
                 Tables.Add(tableItem.ToStringList());
 
@@ -259,7 +259,7 @@ namespace CodingBot
             List<List<string>> SelectColumns = new List<List<string>> { issue.SelectedColumns };
 
             string newTableName = issue.m_lDesc.Last();
-            if(newTableName == "")
+            if (newTableName == "")
             {
                 newTableName = "Table_" + 1 + issue.AllTableItems.Count;
             }
@@ -284,11 +284,11 @@ namespace CodingBot
             string scriptCode = codeResults[3][0];
             string csharpCode = codeResults[3][1];
 
-            if(scriptCode != "")
+            if (scriptCode != "")
             {
                 issue.ScriptCode += scriptCode;
             }
-            if(csharpCode != "")
+            if (csharpCode != "")
             {
                 issue.CSharpCode += csharpCode;
             }
@@ -354,7 +354,7 @@ namespace CodingBot
             else
             {
                 // user can only input valid suboperation
-                
+
                 Dictionary<string, int> suboperations = new Dictionary<string, int>();
 
                 //JOIN :    INNER JOIN,LEFT OUTER JOIN,RIGHT OUTER JOIN,LEFT SEMIJOIN,RIGHT SEMIJOIN,CROSS JOIN
@@ -363,21 +363,21 @@ namespace CodingBot
                 suboperations.Add("RIGHT SEMIJOIN", 102001); suboperations.Add("CROSS JOIN", 102001);
 
                 //Aggregate: SUM/AVG/COUNT
-                suboperations.Add("SUM", 105001); suboperations.Add("AVG", 105001); suboperations.Add("COUNT", 105001); suboperations.Add("SUMMARY", 105001); suboperations.Add("CNT", 105001); suboperations.Add("AVERAGE", 105001); 
+                suboperations.Add("SUM", 105001); suboperations.Add("AVG", 105001); suboperations.Add("COUNT", 105001); suboperations.Add("SUMMARY", 105001); suboperations.Add("CNT", 105001); suboperations.Add("AVERAGE", 105001);
 
                 string userinput_ = userInput.ToUpper();
 
                 string specialKey = "";
-                foreach(var key in suboperations.Keys)
+                foreach (var key in suboperations.Keys)
                 {
-                    if(userinput_.IndexOf(key) >= 0)
+                    if (userinput_.IndexOf(key) >= 0)
                     {
                         specialKey = key;
                         break;
                     }
                 }
 
-                if(specialKey != "")
+                if (specialKey != "")
                 {
                     specialKey = specialKey == "SUMMARY" ? "SUM" : specialKey;
                     specialKey = specialKey == "CNT" ? "SUM" : specialKey;
@@ -390,7 +390,7 @@ namespace CodingBot
                     {
                         issus.Operation = "JOIN";
                     }
-                    else if(nextnode == 105001)
+                    else if (nextnode == 105001)
                     {
                         issus.Operation = "AGGREGATE";
                     }

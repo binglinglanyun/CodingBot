@@ -61,7 +61,6 @@
     <Compile Include="BotServer\Resource.cs" />
     <Compile Include="BotServer\Taxonomy.cs" />
     <Compile Include="BotServer\Tools.cs" />
-    <Compile Include="BotServer\User.cs" />
     <Compile Include="CodingBot.cs" />
     <Compile Include="CodingBotPackage.cs" />
     <Compile Include="Common\DelegateCommand.cs" />

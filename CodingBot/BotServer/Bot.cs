@@ -23,7 +23,7 @@ namespace CodingBot
 
 
 
-        public  ResponseData InitializeUserInputData(UserData userData)
+        public ResponseData InitializeUserInputData(UserData userData)
         {
             List<string> inputPaths = userData.InputPath;
             List<string> outputPaths = userData.OutputPath;
@@ -33,9 +33,9 @@ namespace CodingBot
 
 
             List<List<string>> resource_list = new List<List<string>>();
-            foreach(string resourcePath in resourcePaths)
+            foreach (string resourcePath in resourcePaths)
             {
-                resource_list.Add(new List<string> { resourcePath});
+                resource_list.Add(new List<string> { resourcePath });
             }
 
             List<List<string>> reference_list = new List<List<string>>();
@@ -73,19 +73,19 @@ namespace CodingBot
             //List<List<string>> codeResults = CodeGenerator.CodeGenerate(BotData);
 
             //***************************************************************************************************
-           
-            List<string> TableName = new List<string> {"Table1" };
-            List<string> Columns = new List<string> {"AdId","AdText" };
+
+            List<string> TableName = new List<string> { "Table1" };
+            List<string> Columns = new List<string> { "AdId", "AdText" };
             List<string> Types = new List<string> { "string", "string" };
             List<string> Code = new List<string> { "Table1 = SELECT AdId:string, AdText:string FROM @\"input1\"", "" };
-            List<List<string>> codeResults = new List<List<string>> { TableName, Columns, Types, Code};
+            List<List<string>> codeResults = new List<List<string>> { TableName, Columns, Types, Code };
             //***************************************************************************************************
 
             // whether the CodeGenerator produced new table
             if (codeResults[0].Count > 0)
             {
                 TableItem newTableItem = new TableItem(codeResults[0], codeResults[1], codeResults[2]);
-            m_Dispatcher.m_Issue.AllTableItems.Add(newTableItem.TableName, newTableItem);
+                m_Dispatcher.m_Issue.AllTableItems.Add(newTableItem.TableName, newTableItem);
             }
 
 
@@ -131,7 +131,7 @@ namespace CodingBot
 
             responseData.SciptContent = m_Dispatcher.m_Issue.ScriptCode + "#CS\n" + m_Dispatcher.m_Issue.CSharpCode + "\n#ENDCS";
 
-          
+
 
             return responseData;
         }
@@ -156,7 +156,7 @@ namespace CodingBot
             if (actionType == 1) // select one table
             {
                 string table_name = userInput[0][0];
-                TableItem tableItem= m_Dispatcher.m_Issue.AllTableItems[table_name];
+                TableItem tableItem = m_Dispatcher.m_Issue.AllTableItems[table_name];
                 m_Dispatcher.m_Issue.SelectedTableItems = new List<TableItem> { tableItem };
             }
             else if (actionType == 2) // select columns
@@ -170,7 +170,7 @@ namespace CodingBot
                 List<string> keys1 = userInput[0];
                 List<string> keys2 = userInput[1];
 
-                m_Dispatcher.m_Issue.SelectedKeys = new List<List<string>> { keys1,keys2};
+                m_Dispatcher.m_Issue.SelectedKeys = new List<List<string>> { keys1, keys2 };
             }
             else if (actionType == 4) // select two tables
             {

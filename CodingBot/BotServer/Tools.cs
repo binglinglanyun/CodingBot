@@ -63,7 +63,7 @@ namespace CodingBot
             {
                 int index = input.IndexOf("help ");
                 string param = input.Substring("help ".Length);
-                if(param.IndexOf("product") >=0)
+                if (param.IndexOf("product") >= 0)
                 {
                     return 1;
                 }

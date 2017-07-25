@@ -16,9 +16,9 @@ using CodingBot.ViewModels;
 
 namespace CodingBot
 {
-    
 
-    
+
+
     internal class DataType
     {
         /// <summary />
@@ -723,7 +723,7 @@ namespace CodingBot
     }
 
 
-    
+
 
     public class PathParser
     {
@@ -731,7 +731,7 @@ namespace CodingBot
         {
 
         }
-           static TableItem ParseFilePath(string inpath)
+        static TableItem ParseFilePath(string inpath)
         {
             TableItem res_table;
             if (inpath.IndexOf(".ss") == inpath.Length - 3)
@@ -750,14 +750,14 @@ namespace CodingBot
 
                     col_name.Add(col_list[i].Name.ToString());
                     col_type.Add(col_list[i].Type.ToString());
-                    
+
                 }
-                res_table = new TableItem(table_name,col_name,col_type);
+                res_table = new TableItem(table_name, col_name, col_type);
             }
             else
             {
                 VcWrapper vc = new VcWrapper();
-                
+
                 Stream stream2 = vc.ReadStream(inpath, 0, 100, true);
                 using (StreamReader reader = new StreamReader(stream2))
                 {
@@ -784,5 +784,5 @@ namespace CodingBot
 
         }
     }
-  
+
 }

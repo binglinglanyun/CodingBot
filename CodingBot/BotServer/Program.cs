@@ -17,7 +17,7 @@ namespace CodingBot
             bot.Init();
 
             // init all paths
-            List<string> inputPaths =new List<string> { "input1","input2"};
+            List<string> inputPaths = new List<string> { "input1", "input2" };
             List<string> outputPaths = new List<string> { "output1", "input2" };
             List<string> resourcePaths = new List<string> { "input1", "input2" };
             List<string> referencePaths = new List<string> { "input1", "input2" };
@@ -29,7 +29,7 @@ namespace CodingBot
             userData.ReferencePath = referencePaths;
 
 
-            ResponseData responseData1 =  bot.InitializeUserInputData(userData);
+            ResponseData responseData1 = bot.InitializeUserInputData(userData);
             Console.Write(responseData1.BotMessage);
 
             //filter
@@ -49,7 +49,7 @@ namespace CodingBot
             Console.Write("\n");
             Console.Write(responseData2_2.BotMessage);
             //select columns
-            ResponseData responseDataInterActive2_2 = bot.GetResponseInteractive(new List<List<string>> { new List<string> { "AdId","AdText" } });
+            ResponseData responseDataInterActive2_2 = bot.GetResponseInteractive(new List<List<string>> { new List<string> { "AdId", "AdText" } });
             Console.Write("\n");
             Console.Write(responseDataInterActive2_2.BotMessage);
             // input new table name

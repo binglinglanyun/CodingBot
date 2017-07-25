@@ -15,7 +15,7 @@ namespace CodingBot
         public HashSet<string> m_hKeywords;
 
         //record which table user has selected
-        public Dictionary<string,TableItem> AllTableItems;
+        public Dictionary<string, TableItem> AllTableItems;
 
         public List<TableItem> SelectedTableItems;
 
