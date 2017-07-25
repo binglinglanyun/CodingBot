@@ -12,7 +12,7 @@ namespace CodingBot.Common
         None = 0,  // Don't need to opreation any control
         ShowRadioBox = 1,  // Need to show radio box
         ShowCheckBox = 2,  // Need to show check box
-        ShowMultiCheckBox = 3,  // Need to show multiple check box
+        ShowMultiComboBox = 3,  // Need to show multiple check box
         UpdateDataStatus = 4  // Need to Update Data Status
     }
 
