@@ -215,7 +215,11 @@ namespace CodingBot.Controls
         {
             if (tableItems != null)
             {
-
+                var dataStatusWindow = CodingBotClient.Instance.ShowToolWindow(typeof(DataStatusToolWindow));
+                if (dataStatusWindow != null && dataStatusWindow is DataStatusToolWindow)
+                {
+                    (dataStatusWindow as DataStatusToolWindow).BindTableDataStatus(tableItems);
+                }
             }
         }
 
@@ -240,14 +244,38 @@ namespace CodingBot.Controls
             }
         }
 
+        int cycle = 0;
         private ResponseData GetFakeResponseData()
         {
             ResponseData responseData = new ResponseData();
             responseData.BotMessage = @"Hello, Dear User,Hello, Dear User,Hello,Hello, Dear User,Hello, Dear User, Hello, Dear User, Hello, Dear User,Hello, Dear User";
 
-            responseData.TableOperation = TableOperationType.ShowCheckBox;
+            if (cycle % 4 == 0)
+            {
+                responseData.TableOperation = TableOperationType.ShowRadioBox;
+            }
+            if (cycle % 4 == 1)
+            {
+                responseData.TableOperation = TableOperationType.ShowCheckBox;
+            }
+            if (cycle % 4 == 2)
+            {
+                responseData.TableOperation = TableOperationType.ShowMultiCheckBox;
+            }
+            if (cycle % 4 == 3)
+            {
+                responseData.TableOperation = TableOperationType.UpdateDataStatus;
+            }
+            cycle++;
+   
+            int count = 2;
+            if (responseData.TableOperation == TableOperationType.UpdateDataStatus)
+            {
+                count = 4;
+            }
+
             List<TableItem> tableItems = new List<TableItem>();
-            for (int j = 0; j < 2; j++)
+            for (int j = 0; j < count; j++)
             {
                 TableItem tableItem = new TableItem();
                 tableItem.TableName = "Table Item" + j;
