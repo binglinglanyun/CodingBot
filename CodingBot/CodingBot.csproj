@@ -51,6 +51,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BotServer\Bot.cs" />
+    <Compile Include="BotServer\CodeGenerator.cs" />
+    <Compile Include="BotServer\Dispatcher.cs" />
+    <Compile Include="BotServer\Issue.cs" />
+    <Compile Include="BotServer\ParseInPath.cs" />
+    <Compile Include="BotServer\Parser.cs" />
+    <Compile Include="BotServer\Program.cs" />
+    <Compile Include="BotServer\Resource.cs" />
+    <Compile Include="BotServer\Taxonomy.cs" />
+    <Compile Include="BotServer\Tools.cs" />
     <Compile Include="CodingBot.cs" />
     <Compile Include="CodingBotPackage.cs" />
     <Compile Include="Common\DelegateCommand.cs" />
@@ -110,7 +120,22 @@
     <Reference Include="EnvDTE90, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
+    <Reference Include="Microsoft.Analytics.Interfaces">
+      <HintPath>..\packages\Reference\Microsoft.Analytics.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Analytics.Types">
+      <HintPath>..\packages\Reference\Microsoft.Analytics.Types.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Cosmos.ClientTools.IDECommon">
+      <HintPath>..\packages\Reference\Microsoft.Cosmos.ClientTools.IDECommon.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Cosmos.ScopeStudio">
+      <HintPath>..\packages\Reference\Microsoft.Cosmos.ScopeStudio.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Cosmos.ScopeStudio.BusinessObjects.Common">
+      <HintPath>..\packages\Reference\Microsoft.Cosmos.ScopeStudio.BusinessObjects.Common.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.CommandBars, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
@@ -192,6 +217,12 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="ScopeRuntime">
+      <HintPath>..\packages\Reference\ScopeRuntime.exe</HintPath>
+    </Reference>
+    <Reference Include="SSLibExt">
+      <HintPath>..\packages\Reference\SSLibExt.dll</HintPath>
+    </Reference>
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>

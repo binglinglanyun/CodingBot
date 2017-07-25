@@ -1,0 +1,49 @@
+4	0	41,42,43,44,45				
+41	4	4101,4102	download/install/setup office 365	office 365 download,download office 365,office 365 install,install office 365,office 365 set up,set up office 365,office 365 setup,setup office 365,office 365 installation,installation office 365,365 office download,download 365 office,365 office install,install 365 office,365 office set up,set up 365 office,365 office setup,setup 365 office,365 office installation,installation 365 office,o365 download,download o365,o365 install,install o365,o365 set up,set up o365,o365 setup,setup o365,o365 installation,installation o365,o 365 download,download o 365,o 365 install,install o 365,o 365 set up,set up o 365,o 365 setup,setup o 365,o 365 installation,installation o 365,office download,download office,office install,install office,office set up,set up office,office setup,setup office,office installation,installation office,	device	Which device do you want to install Office 365 on? It could be {1:child}.
+42	4	4201,4202	upgrade office 365	office 365 upgrade,upgrade office 365,office 365 update,update office 365,365 office upgrade,upgrade 365 office,365 office update,update 365 office,o365 upgrade,upgrade o365,o365 update,update o365,o 365 upgrade,upgrade o 365,o 365 update,update o 365,office upgrade,upgrade office,office update,update office,	whether	Are you using Microsoft Office 2016?
+43	4	4301,4302,4303	activate office 365	office 365 activate,activate office 365,office 365 reactivate,reactivate office 365,365 office activate,activate 365 office,365 office reactivate,reactivate 365 office,o365 activate,activate o365,o365 reactivate,reactivate o365,o 365 activate,activate o 365,o 365 reactivate,reactivate o 365,office activate,activate office,office reactivate,reactivate office,	device	What device you are trying to activate O365 on? It could be {1:child}.
+44	4	4401,4402,4403	office 365 subscription	office 365 subscription,subscription office 365,365 office subscription,subscription 365 office,o365 subscription,subscription o365,o 365 subscription,subscription o 365,office subscription,subscription office,	access	What do you want to do: {1:child}?
+45	4	4501,4502,4503	outlook setup	outlook setup,outlook set up,setup outlook,set up outlook	product	For which product: {1:child}?
+4101	41	4103,4104	pc, laptop, mac	pc,laptop,mac	whether	Have you/your organization already purchased a license for Office 365?
+4102	41		android, iphone	android,iphone		
+4103	4101	4105	yes	with license,have license	edtion	Which edition of Office 365 did you purchase? It could be {1:child}
+4104	4101		no	without license		
+4105	4103		home, personal, univerision	home,personal,univerision		
+4201	42	4203,4204	yes	microsoft office 2016,2016	whether	Do you have an Office 365 subscription?
+4202	42		no	microsoft office		
+4203	4201	4205	yes	with subscription,have subscription	version	What version of O365 are you using? It could be {1:child}
+4204	4201	4206,4207	no	without subscription,do not have subscription	whether	Do you have a one-time purchase Office 2016?
+4205	4203	4208,4209	business, home, personal or university	business,home,personal,university	device	Is your device {1:child}?
+4206	4204	4210,4211	yes	one time purchase	device	Is your device {1:child}?
+4207	4204		no	no one time purchase		
+4208	4205		mac	mac		
+4209	4205		pc	pc		
+4210	4206		mac	mac		
+4211	4206		pc	pc		
+4301	43	4304,4305,4306	smartphone, tablet	smartphone,tablet	os	What is the Operating System of your device? It could be {1:child}
+4302	43		pc	pc		
+4303	43	4308,4309	mac	mac	version	What is the version of your Office Mac? It could be {1:child}
+4304	4301		windows phone	window phone		
+4305	4301		ios	ios		
+4306	4301		android	android		
+4308	4303	4314,4315	2011	2011	version	What version of Office 365 do you have? It could be {1:child}
+4309	4303	4316,4317	2016	2016	version	What version of Office 365 do you have? It could be {1:child}
+4314	4308		home,	home		
+4315	4308		personal, university, business	personal,university,business		
+4316	4309		university	university		
+4317	4309		home, personal, business	home,personal,business		
+4401	44	4404	renew	renew,reactivate	version	Which O365 version you want to {0:value} subscription for? It could be {1:child}
+4402	44	4406	cancel	cancel	type	What type of office 365 subscription do you have? It could be {1:child}
+4403	44	4411	add	add	version	In which version of O365 do you want to {0:value} user? It could be {1:child}
+4404	4401		business, home, personal, small and midsized business	business,home,personal,small and midsized business		
+4406	4402		business, home, personal, small and midsized business	business,home,personal,small and midsized business		
+4411	4403		individually, several users, in large organizations	individually,several user,in large organization		
+4501	45	4504,4505	microsoft office outlook 365	microsoft office outlook 365,office outlook 365,office 365,365	device	What is the device that you want to configure Outlook on? It could be {1:child}
+4502	45	4506,4507	microsoft office outlook 2016	microsoft office outlook 2016,office outlook 2016,office 2016,2016	decive	Do you want to set up an email account in Outlook for {1:child}?
+4503	45		other	microsoft office outlook 2013,office outlook 2013,office 2013,2013,microsoft office outlook 2010,office outlook 2010,office 2010,2010,microsoft office outlook 2007,office outlook 2007,office 2007,2007		
+4504	4501	4508,4509	laptop	laptop	whether	Does the account you want to configure use POP3 or IMAP4?
+4505	4501		macbook, android phone, windows phone	macbook,android phone,window phone		
+4506	4502		windows	window		
+4507	4502		mac	mac		
+4508	4504		yes	use pop3 or imap4		
+4509	4504		no	not use pop3 or imap4		

@@ -1,0 +1,64 @@
+//cur_node_id \t parent_node_id \t child_node_id \t keywordlist \t question \t operation \n
+//0: no operation
+//1: Select One Table
+//2: Select Columns
+//3: Select keys
+//4: Select Two Tables
+//filter
+101	1	101001	filter,where,when,	which table do you want to filter?	1
+101001	101	101002		what's your filter condition?	0
+101002	101001	101003,101004,	>,<,=,!,smaller,bigger,less,larger,isnullorempty	Do you want to select columns:Y/N?	0
+101003	101002	101005	yes,true,y	Please select columns:	2
+101005	101003	1		What's the name of new generated Table	0
+101004	101002	1	no,N,nope	What's the name of new generated Table	0
+
+//join
+102	1	102001	join,merge,	Which JOIN operation do you need?\nINNER JOIN/LEFT OUTER JOIN/RIGHT OUTER JOIN/LEFT SEMIJOIN/RIGHT SEMIJOIN/CROSS JOIN	0
+102001	102	102002	INNER JOIN,LEFT OUTER JOIN,RIGHT OUTER JOIN,LEFT SEMIJOIN,RIGHT SEMIJOIN,CROSS JOIN	which two tables do you want to join?	4
+102002	102001	102003		Please select keys for join:	3
+102003	102002	1		What's the name of new generated Table	0
+
+//except
+103	1	103001	subtract,except,exclude,excluding,minus	Which two table do you want to EXCEPT?	4
+103001	103	103002,103003		Do you want to select columns:Y/N?	0
+103002	103001	103004	yes,true,y	Please select columns:	2
+103004	103002	1		What's the name of new generated Table	0
+103003	103001	1	no,N,nope	What's the name of new generated Table	0
+
+
+
+//union  
+104	1	104001	add,union,stack	Which two table do you want to union?	4
+104001	104	104002,104003		Do you want to select columns:Y/N?	0
+104002	104001	104004	yes,true,y	Please select columns:{select columns}?	2
+104004	104002	1		What's the name of new generated Table	0
+104003	104001	1	no,N,nope	What's the name of new generated Table	0
+
+
+
+//aggregate  
+105	1	105001	aggregate,agg	Which aggegative operation do you want?\nSUM/AVG/COUNT	0
+105001	105	105002	sum,summary,count,cnt,average,avg	Which table do you want to aggregate?	1 
+105002	105001	105003		Which columns do you want to aggragate?	2
+105003	105002	1		What's the name of new generated Table	0
+
+//process
+106	1	106001	process,processor	Which table do you want to process?	1
+106001	106	106002		What is the schema of output{column name:date type}?	0
+106002	106001	1	schema,out schema,output schema,output form,output format,out form,out format,:,int,string,float,double	What's the name of new generated Table	0
+
+//reduce
+107	1	107001	reduce,reducer	Which table do you want to reduce?	1
+107001	107	107002		What is the schema of output{column name:date type}? 0
+107002	107001	1	schema,out schema,output schema,output form,output format,out form,out format,:,int,string,float,double	What's the name of new generated Table	0
+
+//combine
+108	1	108001	combine,combiner	Which two table do you want to combine?	1
+108001	108	108002		What is the schema of output{column name:date type}? 0
+108002	108001	1	schema,out schema,output schema,output form,output format,out form,out format,:,int,string,float,double	What's the name of new generated Table	0
+
+//apply
+109	1	109001	split,apply,cross apply Which table do you want to do?	1
+109001	109	109002		Which column do you want to do?	2
+109002	109001	109003		What point do you want to use in split?	0
+109003	109002	1		What's the name of new generated Table	0
