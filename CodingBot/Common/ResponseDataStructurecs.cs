@@ -13,7 +13,8 @@ namespace CodingBot.Common
         ShowRadioBox = 1,  // Need to show radio box
         ShowCheckBox = 2,  // Need to show check box
         ShowMultiComboBox = 3,  // Need to show multiple check box
-        UpdateDataStatus = 4  // Need to Update Data Status
+        UpdateDataStatus = 4,  // Need to Update Data Status
+        ShowCheckBoxForSingleTable = 5, // Show CheckBox For Single Table
     }
 
     public class ResponseData
@@ -35,7 +36,8 @@ namespace CodingBot.Common
 
         /// <summary>
         /// 1. TableOperationType.ShowRadioBox: TableName in each TableItem should not be empty
-        /// 2. TableOperationType.ShowCheckBox/ShowMultiCheckBox/UpdateDataStatus: TableName and TableData in each TableItem should not be empty
+        /// 2. TableOperationType.ShowCheckBox/ShowMultiComboBox/UpdateDataStatus: TableName and TableData in each TableItem should not be empty
+        /// 2. TableOperationType.ShowCheckBoxForSingleTable: Should only have one TableItem in TableItems, TableName and TableData in TableItem should not be empty
         /// </summary>
         public List<TableItem> TableItems;
 
