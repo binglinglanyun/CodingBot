@@ -115,8 +115,18 @@ namespace CodingBot.Controls
             if (button != null)
             {
                 button.IsEnabled = false;
-                this.IsRadioBoxEnabled = false;
-                
+                var stackPanel = button.Parent as StackPanel;
+                if (stackPanel != null && stackPanel.Children != null)
+                {
+                    foreach (var child in stackPanel.Children)
+                    {
+                        var radioButton = child as RadioButton;
+                        if (radioButton != null)
+                        {
+                            radioButton.IsEnabled = false;
+                        }
+                    }
+                }
                 // Call bot server here
             }
         }
@@ -127,7 +137,18 @@ namespace CodingBot.Controls
             if (button != null)
             {
                 button.IsEnabled = false;
-                this.IsCheckBoxEnabled = false;
+                var stackPanel = button.Parent as StackPanel;
+                if (stackPanel != null && stackPanel.Children != null)
+                {
+                    foreach (var child in stackPanel.Children)
+                    {
+                        var checkBox = child as CheckBox;
+                        if (checkBox != null)
+                        {
+                            checkBox.IsEnabled = false;
+                        }
+                    }
+                }
 
                 // Call bot server here
             }
@@ -137,7 +158,6 @@ namespace CodingBot.Controls
         {
             if (tableItems != null)
             {
-                this.IsRadioBoxEnabled = true;
                 StackPanel radioBoxPanel = new StackPanel();
                 radioBoxPanel.Orientation = Orientation.Vertical;
                 radioBoxPanel.HorizontalAlignment = HorizontalAlignment.Left;
@@ -150,8 +170,6 @@ namespace CodingBot.Controls
                     radiobutton.Content = tableItem.TableName;
                     radiobutton.Foreground = this.Foreground;
                     radiobutton.Checked += CheckRadioBox;
-                    Binding isEnableBinding = new Binding("IsRadioBoxEnabled");
-                    radioBoxPanel.SetBinding(RadioButton.IsEnabledProperty, isEnableBinding);
                     radioBoxPanel.Children.Add(radiobutton);
                 }
 
@@ -171,7 +189,6 @@ namespace CodingBot.Controls
         {
             if (tableItems != null)
             {
-                this.IsCheckBoxEnabled = true;
                 this._checkBoxData = new List<string>();
                 StackPanel checkBoxPanel = new StackPanel();
                 checkBoxPanel.Orientation = Orientation.Vertical;
@@ -186,8 +203,6 @@ namespace CodingBot.Controls
                     checkBox.Foreground = this.Foreground;
                     checkBox.Checked += CheckOrUncheckCheckBox;
                     checkBox.Unchecked += CheckOrUncheckCheckBox;
-                    Binding isEnableBinding = new Binding("IsCheckBoxEnabled");
-                    checkBoxPanel.SetBinding(RadioButton.IsEnabledProperty, isEnableBinding);
                     checkBoxPanel.Children.Add(checkBox);
                 }
 
@@ -362,34 +377,6 @@ namespace CodingBot.Controls
             {
                 _inputBoxVisibility = value;
                 NotifyPropertyChanged("InputBoxVisibility");
-            }
-        }
-
-        private bool _isRadioBoxEnabled = true;
-        public bool IsRadioBoxEnabled
-        {
-            get
-            {
-                return _isRadioBoxEnabled;
-            }
-            set
-            {
-                _isRadioBoxEnabled = value;
-                NotifyPropertyChanged("IsRadioBoxEnabled");
-            }
-        }
-
-        private bool _isCheckBoxEnabled = true;
-        public bool IsCheckBoxEnabled
-        {
-            get
-            {
-                return _isCheckBoxEnabled;
-            }
-            set
-            {
-                _isCheckBoxEnabled = value;
-                NotifyPropertyChanged("IsCheckBoxEnabled");
             }
         }
         #endregion
