@@ -37,7 +37,7 @@ namespace CodingBot
 
             bool validInput = true;
             //check whether users input is valid
-            if ((nextnode!=106003) && (nextnode != -1) && (nextnode != 1) && (issue.m_lDesc.Count >0) && (issue.m_lDesc.Last() != ""))
+            if ((nextnode != 109003) && (nextnode!= 101007) && (nextnode != 101006) && (nextnode != 102004) && (nextnode != 103005) && (nextnode != 103006) && (nextnode != 104005) && (nextnode != 104006) && (nextnode != 105004) && (nextnode != 106003) && (nextnode != 107003) && (nextnode != 108003) && (nextnode != 109004) && (nextnode != 105004) && (nextnode != -1) && (nextnode != 1) && (issue.m_lDesc.Count >0) && (issue.m_lDesc.Last() != ""))
             {
                 HashSet<string> keywordsOfCurrentNode = Resource.m_DTopicTree[nextnode].Item3;
                 string userInput = issue.m_lDesc.Last();
@@ -66,40 +66,71 @@ namespace CodingBot
                 question = "Please correct your input";
                 responseData.BotMessage = question;
             }
-            else if (nextnode == 1)
+            else if (nextnode == 110001 || nextnode == 101007 || nextnode == 101006 || nextnode == 102004 || nextnode == 103005 || nextnode == 103006 || nextnode == 104005 || nextnode == 104006 || nextnode == 105004 || nextnode == 106003 || nextnode == 107003 || nextnode == 108003 || nextnode == 109004 || nextnode == 1)
             {
                 // workflow completed! Need to generate code
                 question += "Code Generation Completed!\n\n";
 
+                
+
+                issue.IsSessionStart = true;
+                //TODO: generate code and refresh table
+                responseData.SciptContent = generateCode(ref issue);
+                responseData.TableOperation = TableOperationType.UpdateDataStatus;
+                responseData.TableItems = issue.AllTableItems.Values.ToList();
                 question += "\n What do you want to do next?\n";
                 // parse only one table: filter, process, reduce, aggregate , cross apply
                 // parsed multiple table: union, join, except, combine
 
-                question += "1. Filter\t2. PROCESS\t3. REDUCE\t4.AGGREGATE\t5.CROSS APPLY\n";
+                question += "1. Filter\n2. PROCESS\n3. REDUCE\n4.AGGREGATE\n5.CROSS APPLY\n";
                 if (issue.AllTableItems.Count > 1)
                 {
-                    question += "6. UNION\t7.JOIN\t8.EXCEPT\t9.COMBINE\n";
+                    question += "6. UNION\n7.JOIN\n8.EXCEPT\n9.COMBINE\n";
 
                 }
                 question += "Or just input what you need:";
 
                 responseData.BotMessage = question;
-
-                issue.IsSessionStart = true;
-                //TODO: generate code and refresh table
-                responseData.SciptContent = generateCode(ref issue);
+                nextnode = 1;
+                issue.SubOperation = null;
             }
             else
             {
                 //TODO: if nextnode is suboperation of join or aggregate, we need to update the issue.Suboperation field
                 if (nextnode == 105001 || nextnode == 102001)
                 {
-                    if(issue.SubOperation == "")
-                        issue.SubOperation = issue.m_lDesc.Last();
+                    if (String.IsNullOrEmpty(issue.SubOperation))
+                    { 
+                        string command = issue.m_lDesc.Last();
+                        if (nextnode == 105001)
+                        {
+                            if(command.ToLower().IndexOf("summary")>=0|| command.ToLower().IndexOf("sum") >= 0)
+                                issue.SubOperation = "SUM";
+                            if (command.ToLower().IndexOf("count") >= 0 || command.ToLower().IndexOf("cnt") >= 0)
+                                issue.SubOperation = "COUNT";
+                            if (command.ToLower().IndexOf("avg") >= 0 || command.ToLower().IndexOf("average") >= 0)
+                                issue.SubOperation = "AVG";
+                        }
+                        else
+                        {
+                            if (command.ToLower().IndexOf("inner join") >= 0) //INNER JOIN/LEFT OUTER JOIN/RIGHT OUTER JOIN/LEFT SEMIJOIN/RIGHT SEMIJOIN/CROSS JOIN
+                                issue.SubOperation = "INNER JOIN";
+                            if (command.ToLower().IndexOf("left outer join") >= 0)
+                                issue.SubOperation = "LEFT OUTER JOIN";
+                            if (command.ToLower().IndexOf("right outer join") >= 0)
+                                issue.SubOperation = "RIGHT OUTER JOIN";
+                            if (command.ToLower().IndexOf("left semijoin") >= 0)
+                                issue.SubOperation = "LEFT SEMIJOIN";
+                            if (command.ToLower().IndexOf("right semijoin") >= 0)
+                                issue.SubOperation = "RIGHT SEMIJOIN";
+                            if (command.ToLower().IndexOf("cross join") >= 0)
+                                issue.SubOperation = "CROSS JOIN";
+                        }
+                    }
                 }
 
                 //TODO: remenber users's input, such as filter/APPLY
-                if (nextnode == 101002 || nextnode == 106002 || nextnode == 107002 || nextnode == 108002 || nextnode == 109002)
+                if (nextnode == 101002 || nextnode == 106002 || nextnode == 107002 || nextnode == 108002 || nextnode == 109003)
                 {
                     issue.FilterCondition = issue.m_lDesc.Last();
                 }
@@ -299,7 +330,7 @@ namespace CodingBot
             string newTableName = issue.m_lDesc.Last();
             if (newTableName == "" || newTableName == "no" || newTableName == "NO" || newTableName == "N" || newTableName == "n")
             {
-                newTableName = "Table_" + (1 + issue.AllTableItems.Count);
+                newTableName = "Table" + (1 + issue.AllTableItems.Count);
             }
 
             Dictionary<string, object> BotData = new Dictionary<string, object> { {"Operation", Operation},
@@ -388,6 +419,11 @@ namespace CodingBot
             {
                 issus.Operation = "COMBINE";
                 nextnode = 108;
+            }
+            else if (userInput.IndexOf("output", StringComparison.InvariantCultureIgnoreCase) >= 0)
+            {
+                issus.Operation = "OUTPUT";
+                nextnode = 110;
             }
             else
             {

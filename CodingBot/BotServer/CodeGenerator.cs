@@ -80,11 +80,11 @@ namespace CodingBot
                     for (int i = 0; i <= inpath_list.Count - 1; i++)
                     {
 
-                        code_res += "#DECLARE input_path" + i.ToString() + " string = @\"" + inpath_list[i][0] + "\";\n";
+                        code_res += "#DECLARE inpath" + i.ToString() + " string = @\"" + inpath_list[i][0] + "\";\n";
                     }
                     for (int i = 0; i <= outpath_list.Count - 1; i++)
                     {
-                        code_res += "#DECLARE output_path" + i.ToString() + " string = @\"" + outpath_list[i][0] + "\";\n";
+                        code_res += "#DECLARE outpath" + i.ToString() + " string = @\"" + outpath_list[i][0] + "\";\n";
                     }
                     table_res.Add(res_table_name);
                     table_res.Add(res_col_name);
@@ -92,6 +92,7 @@ namespace CodingBot
                     break;
 
                 case "EXTRACT":
+                    new_tablename = new_tablename.Replace("_", "");
                     code_res += new_tablename + " = \n\t";
 
                     res_table_name.Add(new_tablename);
@@ -257,29 +258,29 @@ namespace CodingBot
                     for (int i = 0; i <= Tables.Count - 2; i++)
                     {
                         code_res += "SELECT ";
-                        for (int j = 0; j <= SelectColumns[i].Count - 2; j++)
+                        for (int j = 0; j <= Keys[i].Count - 2; j++)
                         {
-                            code_res += SelectColumns[i][j] + ", ";
+                            code_res += Keys[i][j] + ", ";
                         }
-                        code_res += SelectColumns[i][SelectColumns[i].Count - 1] + "\n\t";
+                        code_res += Keys[i][Keys[i].Count - 1] + "\n\t";
                         code_res += "FROM " + Tables[i][0][0] + "\n\tEXCEPT\n\t";
 
                     }
 
                     code_res += "SELECT ";
-                    for (int j = 0; j <= SelectColumns[Tables.Count - 1].Count - 2; j++)
+                    for (int j = 0; j <= Keys[Tables.Count - 1].Count - 2; j++)
                     {
-                        code_res += SelectColumns[Tables.Count - 1][j] + ", ";
+                        code_res += Keys[Tables.Count - 1][j] + ", ";
                     }
-                    code_res += SelectColumns[Tables.Count - 1][SelectColumns[Tables.Count - 1].Count - 1] + "\n\t";
+                    code_res += Keys[Tables.Count - 1][Keys[Tables.Count - 1].Count - 1] + "\n\t";
                     code_res += "FROM " + Tables[Tables.Count - 1][0][0] + ";\n";
 
-                    for (int j = 0; j <= SelectColumns[0].Count - 1; j++)
+                    for (int j = 0; j <= Keys[0].Count - 1; j++)
                     {
-                        res_col_name.Add(SelectColumns[0][j]);
+                        res_col_name.Add(Keys[0][j]);
                         for (int k = 0; k <= Tables[0][1].Count - 1; k++)
                         {
-                            if (SelectColumns[0][j] == Tables[0][1][k])
+                            if (Keys[0][j] == Tables[0][1][k])
                             {
                                 res_col_type.Add(Tables[0][2][k]);
                                 break;
@@ -302,29 +303,29 @@ namespace CodingBot
                     for (int i = 0; i <= Tables.Count - 2; i++)
                     {
                         code_res += "SELECT ";
-                        for (int j = 0; j <= SelectColumns[i].Count - 2; j++)
+                        for (int j = 0; j <= Keys[i].Count - 2; j++)
                         {
-                            code_res += SelectColumns[i][j] + ", ";
+                            code_res += Keys[i][j] + ", ";
                         }
-                        code_res += SelectColumns[i][SelectColumns[i].Count - 1] + "\n\t";
+                        code_res += Keys[i][Keys[i].Count - 1] + "\n\t";
                         code_res += "FROM " + Tables[i][0][0] + "\n\tUNION\n\t";
 
                     }
 
                     code_res += "SELECT ";
-                    for (int j = 0; j <= SelectColumns[Tables.Count - 1].Count - 2; j++)
+                    for (int j = 0; j <= Keys[Tables.Count - 1].Count - 2; j++)
                     {
-                        code_res += SelectColumns[Tables.Count - 1][j] + ", ";
+                        code_res += Keys[Tables.Count - 1][j] + ", ";
                     }
-                    code_res += SelectColumns[Tables.Count - 1][SelectColumns[Tables.Count - 1].Count - 1] + "\n\t";
+                    code_res += Keys[Tables.Count - 1][Keys[Tables.Count - 1].Count - 1] + "\n\t";
                     code_res += "FROM " + Tables[Tables.Count - 1][0][0] + ";\n";
 
-                    for (int j = 0; j <= SelectColumns[0].Count - 1; j++)
+                    for (int j = 0; j <= Keys[0].Count - 1; j++)
                     {
-                        res_col_name.Add(SelectColumns[0][j]);
+                        res_col_name.Add(Keys[0][j]);
                         for (int k = 0; k <= Tables[0][1].Count - 1; k++)
                         {
-                            if (SelectColumns[0][j] == Tables[0][1][k])
+                            if (Keys[0][j] == Tables[0][1][k])
                             {
                                 res_col_type.Add(Tables[0][2][k]);
                                 break;
@@ -369,7 +370,10 @@ namespace CodingBot
                         {
                             code_res += SubOperation + "(" + aggregate_table_colname[i] + ") AS " + aggregate_table_colname[i] + "_" + SubOperation.ToLower();
                             res_col_name.Add(aggregate_table_colname[i] + "_" + SubOperation.ToLower());
-                            res_col_type.Add(aggregate_table_coltype[i]);
+                            if(SubOperation.ToLower()=="COUNT")
+                                res_col_type.Add("int");
+                            else    
+                                res_col_type.Add(aggregate_table_coltype[i]);
                             break;
                         }
 
@@ -501,7 +505,7 @@ namespace CodingBot
                     {
                         cs_code_res += after_table_colname[i] + ":" + after_table_coltype[i] + ", ";
                     }
-                    cs_code_res += after_table_colname[after_table_colname.Count - 1] + ":" + after_table_coltype[after_table_colname.Count - 1] + "\");\n\t\treturn outputSchema;\n\t}\n\n\tpublic override IEnumerable<Row> Process(RowSet input_rowset, Row output_row, string[] args)\n{\n\t\tforeach (Row row in input_rowset.Rows)\n\t\t{\n\n\t\t}\n\t}\n}\n";
+                    cs_code_res += after_table_colname[after_table_colname.Count - 1] + ":" + after_table_coltype[after_table_colname.Count - 1] + "\");\n\t\treturn outputSchema;\n\t}\n\n\tpublic override IEnumerable<Row> Process(RowSet input_rowset, Row output_row, string[] args)\n\t{\n\t\tforeach (Row row in input_rowset.Rows)\n\t\t{\n\n\t\t}\n\t}\n}\n";
 
 
                     code_res += new_tablename + " =\n\t" + "PROCESS " + before_table_name + "\n\t" + "PRODUCE ";
@@ -665,13 +669,24 @@ namespace CodingBot
                     table_res.Add(res_col_name);
                     table_res.Add(res_col_type);
                     break;
+
+                case "OUTPUT":                    
+                    string output_table_name = Tables[0][0][0];
+                    code_res += "OUTPUT " + output_table_name + " TO @outpath0;\n";
+                    List<string> tmp_list1 = new List<string>();
+                    List<string> tmp_list2 = new List<string>();
+                    List<string> tmp_list3 = new List<string>();
+                    table_res.Add(tmp_list1);
+                    table_res.Add(tmp_list2);
+                    table_res.Add(tmp_list3);
+                    break;
             }
             List<string> code_list = new List<string>();
             code_list.Add(code_res);
             code_list.Add(cs_code_res);
             table_res.Add(code_list);
-            Console.Write(table_res[3][0]);
-            Console.Write(table_res[3][1]);
+        //    Console.Write(table_res[3][0]);
+        //    Console.Write(table_res[3][1]);
 
             /* Console.Write("Table structure:\n");
              Console.Write("Table name:" + table_res[0][0]+"\nTable column:\n");

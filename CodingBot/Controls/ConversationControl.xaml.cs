@@ -484,6 +484,8 @@ namespace CodingBot.Controls
                     ShowCheckBoxForSingleTableInConversation(responseData.TableItems);
                     break;
             }
+
+            var conversationWindow = CodingBotClient.Instance.ShowToolWindow(typeof(ConversationToolWindow));
         }
         #endregion
 
