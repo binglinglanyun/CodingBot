@@ -202,17 +202,17 @@ namespace CodingBot.ViewModels
                         (scriptWindow as ScriptToolWindow).UpdateScript(responseData.SciptContent);
                     }
 
-                    var conversationWindow = CodingBotClient.Instance.ShowToolWindow(typeof(ConversationToolWindow));
-                    if (conversationWindow != null && conversationWindow is ConversationToolWindow)
-                    {
-                        (conversationWindow as ConversationToolWindow).UpdateBotMessage(responseData.BotMessage);
-                    }
-
                     var dataStatusWindow = CodingBotClient.Instance.ShowToolWindow(typeof(DataStatusToolWindow));
                     if (dataStatusWindow != null && dataStatusWindow is DataStatusToolWindow)
                     {
                         (dataStatusWindow as DataStatusToolWindow).BindInputDataStatus(userData);
                         (dataStatusWindow as DataStatusToolWindow).BindTableDataStatus(responseData.AllTableItems);
+                    }
+
+                    var conversationWindow = CodingBotClient.Instance.ShowToolWindow(typeof(ConversationToolWindow));
+                    if (conversationWindow != null && conversationWindow is ConversationToolWindow)
+                    {
+                        (conversationWindow as ConversationToolWindow).UpdateBotMessage(responseData.BotMessage);
                     }
 
                     this.OnButtonClick(new EventArgs());
