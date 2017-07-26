@@ -25,11 +25,11 @@ namespace CodingBot.Controls
     public partial class ConversationControl : UserControl, INotifyPropertyChanged
     {
         private const double c_maxConversationBoxWidth = 300;
-        private SolidColorBrush _botMessageBackground = Brushes.White;
+        private SolidColorBrush _botMessageBackground = Brushes.PaleGreen;
         private SolidColorBrush _botMessageForeground = Brushes.Black;
         private Thickness _botMessageThickness = new Thickness(5,0,0,0);
         private Thickness _messagePadding = new Thickness(10);
-        private Thickness _botControlThickness = new Thickness(10, 5, 0, 0);
+        private Thickness _botControlThickness = new Thickness(10,5,0,0);
         private Thickness _botButtonThickness = new Thickness(10);
 
         private List<string> _radioBoxData = new List<string>();
