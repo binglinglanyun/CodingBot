@@ -212,7 +212,7 @@ namespace CodingBot.ViewModels
                     if (dataStatusWindow != null && dataStatusWindow is DataStatusToolWindow)
                     {
                         (dataStatusWindow as DataStatusToolWindow).BindInputDataStatus(userData);
-                        (dataStatusWindow as DataStatusToolWindow).BindTableDataStatus(responseData.TableItems);
+                        (dataStatusWindow as DataStatusToolWindow).BindTableDataStatus(responseData.AllTableItems);
                     }
 
                     this.OnButtonClick(new EventArgs());
