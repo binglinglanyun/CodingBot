@@ -173,14 +173,14 @@ namespace CodingBot
             */
 
             string question = "";
-            question += "\n What do you want to do next?\n";
+            question += "What do you want to do next?\n";
 
             // parse only one table: filter, process, reduce, aggregate , cross apply
             // parsed multiple table: union, join, except, combine
-            question += "1. Filter\t2. PROCESS\t3. REDUCE\t4.AGGREGATE\t5.CROSS APPLY\n";
+            question += "1. Filter\n2. PROCESS\n3. REDUCE\n4.AGGREGATE\n5.CROSS APPLY\n";
             if (m_Dispatcher.m_Issue.AllTableItems.Count > 1)
             {
-                question += "6. UNION\t7.JOIN\t8.EXCEPT\t9.COMBINE\n";
+                question += "6. UNION\n7.JOIN\n8.EXCEPT\n9.COMBINE\n";
 
             }
             question += "Or just input what you need:";
@@ -226,23 +226,34 @@ namespace CodingBot
             else if (actionType == 5) // select columns
             {
                 List<string> selectedColumns = userInput[0];
+                List<string> new_list = new List<string>();
+                for(int i = 0;i<= userInput[0].Count - 1; i++)
+                {
+                    string tmp_str = userInput[0][i].Split(new char[] { '('})[0];
+                    new_list.Add(tmp_str);
+                }
 
-                m_Dispatcher.m_Issue.SelectedColumns = selectedColumns;
+                m_Dispatcher.m_Issue.SelectedColumns = new_list;
             }
             else if (actionType == 3) // select keys
             {
-                List<string> keys1 = userInput[0];
-                List<string> keys2 = userInput[1];
+
+                List<List<string>> keys = new List<List<string>>();
+                for (int j = 0; j <= userInput.Count - 1; j++)
+                {
+                    List<string> temp_key = userInput[j];
+                    keys.Add(temp_key);
+                }
+
 
                 List<string> pureKeys1 = new List<string>();
                 List<string> pureKeys2 = new List<string>();
 
-
-                pureKeys1.Add(keys1[0].Split(new char[] { '(' })[0]);
-                pureKeys1.Add(keys2[0].Split(new char[] { '(' })[0]);
-
-                pureKeys2.Add(keys1[1].Split(new char[] { '(' })[0]);
-                pureKeys2.Add(keys2[1].Split(new char[] { '(' })[0]);
+                for (int k = 0; k <= keys.Count - 1; k++) { 
+                   pureKeys1.Add(keys[k][0].Split(new char[] { '(' })[0]);
+                   pureKeys2.Add(keys[k][1].Split(new char[] { '(' })[0]);
+                }
+  
 
                 m_Dispatcher.m_Issue.SelectedKeys = new List<List<string>> { pureKeys1, pureKeys2 };
             }
