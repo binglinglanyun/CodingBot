@@ -34,8 +34,27 @@ namespace CodingBot.Controls
             InitializeComponent();
             this.DataContext = this;
             this.UserDataViewModel.RegisterButtonClickEvent(onUserDataButtonClick);
+            this._inputBox.GotFocus += new RoutedEventHandler(LabelTextBoxGotFocus);
+            this._inputBox.AddHandler(Button.MouseLeftButtonUpEvent, new MouseButtonEventHandler(LableTextBoxMouseLeftButtonUp), true);
         }
 
+        void LabelTextBoxGotFocus(Object sender, EventArgs e)
+        {
+            this._inputBox.Tag = true;
+            this._inputBox.SelectAll();
+        }
+
+        void LableTextBoxMouseLeftButtonUp(Object sender, MouseButtonEventArgs e)
+        {
+            bool? tag = this._inputBox.Tag as bool?;
+            if (tag != null && tag == true)
+            {
+                this._inputBox.SelectAll();
+            }
+            this._inputBox.Tag = false;
+        }
+
+        #region Button Click
         private void onUserDataButtonClick(object sender, EventArgs e)
         {
             this._userDataControl.Visibility = Visibility.Collapsed;
@@ -55,7 +74,6 @@ namespace CodingBot.Controls
             }
         }
 
-        #region Button Click
         private void CheckRadioBox(object sender, RoutedEventArgs args)
         {
             RadioButton radioButton = sender as RadioButton;

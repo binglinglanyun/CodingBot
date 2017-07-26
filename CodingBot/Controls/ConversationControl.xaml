@@ -26,7 +26,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <TextBox Text="{Binding InputBoxText}"/>
+                <TextBox x:Name="_inputBox" Text="{Binding InputBoxText}"/>
                 <Button Grid.Row="1" Margin="2" Content="Enter" Click="InputBoxEnter_Click" HorizontalAlignment="Right"/>
             </Grid>
         </Border>
