@@ -105,23 +105,6 @@ namespace CodingBot
         /// <param name="e">Event args.</param>
         private void MenuItemCallback(object sender, EventArgs e)
         {
-            string message = @"Dear User:
-
-I'm your private coding bot.
-	
-Please have fun!
-	
-Let's start!";
-
-            // Show a message box to prove we were here
-            VsShellUtilities.ShowMessageBox(
-                this.ServiceProvider,
-                message,
-                null,
-                OLEMSGICON.OLEMSGICON_NOICON,
-                OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
-
             this.ShowToolWindow(typeof(ConversationToolWindow));
         }
 

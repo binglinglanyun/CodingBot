@@ -44,12 +44,12 @@ namespace CodingBot.Controls
             this.InputBoxVisibility = Visibility.Visible;
         }
 
-        private void InputBoxEnter_Click(object sender, RoutedEventArgs e)
+        private void InputBoxSend_Click(object sender, RoutedEventArgs e)
         {
             ShowUserMessageInConversation();
 
-            ResponseData responseData = CodingBotClient.Instance.BotServer.GetResponse(this.InputBoxText);
-            //ResponseData responseData = GetFakeResponseData();
+            //ResponseData responseData = CodingBotClient.Instance.BotServer.GetResponse(this.InputBoxText);
+            ResponseData responseData = GetFakeResponseData();
             if (responseData != null)
             {
                 if (!string.IsNullOrEmpty(responseData.SciptContent))
