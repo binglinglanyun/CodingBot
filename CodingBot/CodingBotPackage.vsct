@@ -56,7 +56,7 @@
         <Parent guid="guidCodingBotPackageCmdSet" id="MyMenuGroup" />
         <Icon guid="guidImages" id="bmpPic1" />
         <Strings>
-          <ButtonText>Start CodingBot</ButtonText>
+          <ButtonText>Start XiaoC</ButtonText>
         </Strings>
       </Button>
     </Buttons>

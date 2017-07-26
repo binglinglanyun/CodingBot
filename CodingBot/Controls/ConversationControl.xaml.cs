@@ -24,7 +24,14 @@ namespace CodingBot.Controls
     /// </summary>
     public partial class ConversationControl : UserControl, INotifyPropertyChanged
     {
-        private const double c_maxConversationBoxWidth = 250;
+        private const double c_maxConversationBoxWidth = 300;
+        private SolidColorBrush _botMessageBackground = Brushes.PaleGreen;
+        private SolidColorBrush _botMessageForeground = Brushes.Black;
+        private Thickness _botMessageThickness = new Thickness(5,0,0,0);
+        private Thickness _messagePadding = new Thickness(10);
+        private Thickness _botControlThickness = new Thickness(10,5,0,0);
+        private Thickness _botButtonThickness = new Thickness(10);
+
         private List<string> _radioBoxData = new List<string>();
         private List<string> _checkBoxData = new List<string>();
         private List<string> _checkBoxForSingleTableData = new List<string>();
@@ -44,7 +51,7 @@ namespace CodingBot.Controls
             this.InputBoxVisibility = Visibility.Visible;
         }
 
-        private void InputBoxEnter_Click(object sender, RoutedEventArgs e)
+        private void InputBoxSend_Click(object sender, RoutedEventArgs e)
         {
             ShowUserMessageInConversation();
 
@@ -245,13 +252,17 @@ namespace CodingBot.Controls
         #region Show Content in Conversation functions
         public void ShowBotMessageInConversation(string message)
         {
-            TextBlock textBlock = new TextBlock();
-            textBlock.Text = message;
-            textBlock.TextWrapping = TextWrapping.Wrap;
-            textBlock.HorizontalAlignment = HorizontalAlignment.Left;
-            textBlock.MaxWidth = c_maxConversationBoxWidth;
-            textBlock.Margin = new Thickness(5, 5, 0, 0);
-            this._conversationDisplayRegion.Children.Add(textBlock);
+            TextBox textBox = new TextBox();
+            textBox.IsReadOnly = true;
+            textBox.Text = message;
+            textBox.TextWrapping = TextWrapping.Wrap;
+            textBox.HorizontalAlignment = HorizontalAlignment.Left;
+            textBox.Width = c_maxConversationBoxWidth;
+            textBox.Foreground = this._botMessageForeground;
+            textBox.Background = this._botMessageBackground;
+            textBox.Margin = new Thickness(5,10,0,0);
+            textBox.Padding = this._messagePadding;
+            this._conversationDisplayRegion.Children.Add(textBox);
             ScrollToEnd();
         }
 
@@ -262,7 +273,9 @@ namespace CodingBot.Controls
             textBlock.TextWrapping = TextWrapping.Wrap;
             textBlock.MaxWidth = c_maxConversationBoxWidth;
             textBlock.HorizontalAlignment = HorizontalAlignment.Right;
-            textBlock.Margin = new Thickness(0, 5, 5, 0);
+            textBlock.Margin = new Thickness(0, 10, 5, 0);
+            textBlock.Background = Brushes.Green;
+            textBlock.Padding = this._messagePadding;
             this._conversationDisplayRegion.Children.Add(textBlock);
             ScrollToEnd();
         }
@@ -275,20 +288,20 @@ namespace CodingBot.Controls
                 radioBoxPanel.Orientation = Orientation.Vertical;
                 radioBoxPanel.HorizontalAlignment = HorizontalAlignment.Left;
                 radioBoxPanel.Width = c_maxConversationBoxWidth;
-                radioBoxPanel.Margin = new Thickness(10, 5, 5, 0);
+                radioBoxPanel.Margin = _botMessageThickness;
+                radioBoxPanel.Background = this._botMessageBackground;
                 foreach (var tableItem in tableItems)
                 {
                     RadioButton radiobutton = new RadioButton();
-                    radiobutton.Margin = new Thickness(0, 3, 0, 0);
+                    radiobutton.Margin = this._botControlThickness;
                     radiobutton.Content = tableItem.TableName;
-                    radiobutton.Foreground = this.Foreground;
                     radiobutton.Checked += CheckRadioBox;
                     radioBoxPanel.Children.Add(radiobutton);
                 }
 
                 Button button = new Button();
                 button.Content = "Select";
-                button.Margin = new Thickness(0, 10, 0, 0);
+                button.Margin = this._botButtonThickness;
                 button.HorizontalAlignment = HorizontalAlignment.Left;
                 button.Click += new RoutedEventHandler(OnSelectRadioBoxClick);
                 radioBoxPanel.Children.Add(button);
@@ -307,13 +320,13 @@ namespace CodingBot.Controls
                 checkBoxPanel.Orientation = Orientation.Vertical;
                 checkBoxPanel.HorizontalAlignment = HorizontalAlignment.Left;
                 checkBoxPanel.Width = c_maxConversationBoxWidth;
-                checkBoxPanel.Margin = new Thickness(10, 5, 5, 0);
+                checkBoxPanel.Margin = _botMessageThickness;
+                checkBoxPanel.Background = this._botMessageBackground;
                 foreach (var tableItem in tableItems)
                 {
                     CheckBox checkBox = new CheckBox();
-                    checkBox.Margin = new Thickness(0, 3, 0, 0);
+                    checkBox.Margin = this._botControlThickness;
                     checkBox.Content = tableItem.TableName;
-                    checkBox.Foreground = this.Foreground;
                     checkBox.Checked += CheckOrUncheckCheckBox;
                     checkBox.Unchecked += CheckOrUncheckCheckBox;
                     checkBoxPanel.Children.Add(checkBox);
@@ -321,7 +334,7 @@ namespace CodingBot.Controls
 
                 Button button = new Button();
                 button.Content = "Select";
-                button.Margin = new Thickness(0, 10, 0, 0);
+                button.Margin = this._botButtonThickness;
                 button.HorizontalAlignment = HorizontalAlignment.Left;
                 button.Click += new RoutedEventHandler(OnSelectCheckBoxClick);
                 checkBoxPanel.Children.Add(button);
@@ -340,13 +353,13 @@ namespace CodingBot.Controls
                 checkBoxPanel.Orientation = Orientation.Vertical;
                 checkBoxPanel.HorizontalAlignment = HorizontalAlignment.Left;
                 checkBoxPanel.Width = c_maxConversationBoxWidth;
-                checkBoxPanel.Margin = new Thickness(10, 5, 5, 0);
+                checkBoxPanel.Margin = _botMessageThickness;
+                checkBoxPanel.Background = this._botMessageBackground;
                 foreach (var rowItem in tableItems[0].TableData)
                 {
                     CheckBox checkBox = new CheckBox();
-                    checkBox.Margin = new Thickness(0, 3, 0, 0);
+                    checkBox.Margin = this._botControlThickness;
                     checkBox.Content = string.Format("{0}({1})", rowItem.ColumnName, rowItem.DataType);
-                    checkBox.Foreground = this.Foreground;
                     checkBox.Checked += CheckOrUncheckCheckBox;
                     checkBox.Unchecked += CheckOrUncheckCheckBox;
                     checkBoxPanel.Children.Add(checkBox);
@@ -354,7 +367,7 @@ namespace CodingBot.Controls
 
                 Button button = new Button();
                 button.Content = "Select";
-                button.Margin = new Thickness(0, 10, 0, 0);
+                button.Margin = this._botButtonThickness;
                 button.HorizontalAlignment = HorizontalAlignment.Left;
                 button.Click += new RoutedEventHandler(OnSelectCheckBoxClick);
                 checkBoxPanel.Children.Add(button);
@@ -369,17 +382,19 @@ namespace CodingBot.Controls
             
             StackPanel keyPairPanel = new StackPanel();
             keyPairPanel.Orientation = Orientation.Horizontal;
-            keyPairPanel.Margin = new Thickness(0,5,0,5);
+            keyPairPanel.Margin = new Thickness(5) ;
+            keyPairPanel.Background = this._botMessageBackground;
             TextBlock textBlock = new TextBlock();
             textBlock.VerticalAlignment = VerticalAlignment.Center;
             textBlock.Text = "Key Pair:";
+            textBlock.Foreground = this._botMessageForeground;
             keyPairPanel.Children.Add(textBlock);
             foreach (var tableItem in _multiComboBoxTableItems)
             {
                 ComboBox comboBox = new ComboBox();
                 comboBox.Width = 100;
                 comboBox.SelectedIndex = 0;
-                comboBox.Margin = new Thickness(10, 0, 0, 0);
+                comboBox.Margin = new Thickness(5, 0, 5, 0);
                 foreach (var rowItem in tableItem.TableData)
                 {
                     if (rowItem != null)
@@ -406,7 +421,8 @@ namespace CodingBot.Controls
                 comboBoxPanel.Orientation = Orientation.Vertical;
                 comboBoxPanel.HorizontalAlignment = HorizontalAlignment.Left;
                 comboBoxPanel.Width = c_maxConversationBoxWidth;
-                comboBoxPanel.Margin = new Thickness(10, 5, 5, 0);
+                comboBoxPanel.Margin = _botMessageThickness;
+                comboBoxPanel.Background = this._botMessageBackground;
 
                 // Key pair panel
                 StackPanel keyPairPanel = CreateKeyPairPanel();
@@ -416,12 +432,13 @@ namespace CodingBot.Controls
                 buttonPanel.Orientation = Orientation.Horizontal;
                 Button addMoreButton = new Button();
                 addMoreButton.Content = "Add Key Pair";
+                addMoreButton.Margin = this._botButtonThickness;
                 addMoreButton.Click += new RoutedEventHandler(OnAddMoreButtonClick);
                 buttonPanel.Children.Add(addMoreButton);
 
                 Button finishButton = new Button();
                 finishButton.Content = "Finish";
-                finishButton.Margin = new Thickness(10,0,0,0);
+                finishButton.Margin = this._botButtonThickness;
                 finishButton.Click += new RoutedEventHandler(OnFinishButtonClick);
                 buttonPanel.Children.Add(finishButton);
 
@@ -502,6 +519,10 @@ namespace CodingBot.Controls
             if (responseData.TableOperation == TableOperationType.UpdateDataStatus)
             {
                 count = 4;
+            }
+            if (responseData.TableOperation == TableOperationType.ShowCheckBoxForSingleTable)
+            {
+                count = 1;
             }
 
             List<TableItem> tableItems = new List<TableItem>();

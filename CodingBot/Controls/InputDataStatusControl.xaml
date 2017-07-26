@@ -23,19 +23,19 @@
                     <Setter Property="IsExpanded" Value="True"/>
                 </Style>
             </StackPanel.Resources>
-            <Expander Header="Input Path">
+            <Expander Header="Input Path(s)">
                 <ListBox ItemsSource="{Binding InputPath}"/>
             </Expander>
 
-            <Expander Header="Output Path">
+            <Expander Header="Output Path(s)">
                 <ListBox ItemsSource="{Binding OutputPath}"/>
             </Expander>
 
-            <Expander Header="Resource Path" >
+            <Expander Header="Resource Path(s)" >
                 <ListBox ItemsSource="{Binding ResourcePath}"/>
             </Expander>
 
-            <Expander Header="Reference Path" >
+            <Expander Header="Reference Path(s)" >
                 <ListBox ItemsSource="{Binding ReferencePath}"/>
             </Expander>
         </StackPanel>
