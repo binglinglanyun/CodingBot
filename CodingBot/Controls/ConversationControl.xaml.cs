@@ -252,16 +252,17 @@ namespace CodingBot.Controls
         #region Show Content in Conversation functions
         public void ShowBotMessageInConversation(string message)
         {
-            TextBlock textBlock = new TextBlock();
-            textBlock.Text = message;
-            textBlock.TextWrapping = TextWrapping.Wrap;
-            textBlock.HorizontalAlignment = HorizontalAlignment.Left;
-            textBlock.Width = c_maxConversationBoxWidth;
-            textBlock.Foreground = this._botMessageForeground;
-            textBlock.Background = this._botMessageBackground;
-            textBlock.Margin = new Thickness(5,10,0,0);
-            textBlock.Padding = this._messagePadding;
-            this._conversationDisplayRegion.Children.Add(textBlock);
+            TextBox textBox = new TextBox();
+            textBox.IsReadOnly = true;
+            textBox.Text = message;
+            textBox.TextWrapping = TextWrapping.Wrap;
+            textBox.HorizontalAlignment = HorizontalAlignment.Left;
+            textBox.Width = c_maxConversationBoxWidth;
+            textBox.Foreground = this._botMessageForeground;
+            textBox.Background = this._botMessageBackground;
+            textBox.Margin = new Thickness(5,10,0,0);
+            textBox.Padding = this._messagePadding;
+            this._conversationDisplayRegion.Children.Add(textBox);
             ScrollToEnd();
         }
 
