@@ -424,7 +424,7 @@ namespace CodingBot.Controls
                     ShowMutiComboBoxInConversation(responseData.TableItems);
                     break;
                 case TableOperationType.UpdateDataStatus:
-                    UpdateUpdateDataStatus(responseData.TableItems);
+                    UpdateUpdateDataStatus(responseData.AllTableItems);
                     break;
             }
         }
