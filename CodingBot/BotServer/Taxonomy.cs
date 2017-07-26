@@ -147,6 +147,11 @@ namespace CodingBot
                         responseData.TableOperation = TableOperationType.ShowCheckBox;
                         responseData.TableItems = issue.AllTableItems.Values.ToList();
                     }
+                    else if (actionType == 4)
+                    {
+                        responseData.TableOperation = TableOperationType.UpdateDataStatus;
+                        responseData.TableItems = issue.AllTableItems.Values.ToList();
+                    }
                 }
 
 
@@ -359,7 +364,7 @@ namespace CodingBot
                 issus.Operation = "AGGREGATE";
                 nextnode = 105;
             }
-            else if (userInput == "5" || userInput.IndexOf("CROSS APPLY", StringComparison.InvariantCultureIgnoreCase) >= 0)
+            else if (userInput == "5" || userInput.IndexOf("CROSS APPLY", StringComparison.InvariantCultureIgnoreCase) >= 0 || userInput.IndexOf("split", StringComparison.InvariantCultureIgnoreCase) >= 0)
             {
                 issus.Operation = "APPLY";
                 nextnode = 109;

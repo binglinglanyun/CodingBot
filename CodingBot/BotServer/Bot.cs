@@ -194,7 +194,7 @@ namespace CodingBot
 
             responseData.SciptContent = m_Dispatcher.m_Issue.ScriptCode + "#CS\n" + m_Dispatcher.m_Issue.CSharpCode + "\n#ENDCS";
 
-
+            responseData.AllTableItems = m_Dispatcher.m_Issue.AllTableItems.Values.ToList();
 
             return responseData;
         }
