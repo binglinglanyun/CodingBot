@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ScopeRuntime;
-//using SStreamPlusColumnGroup;
+using SStreamPlusColumnGroup;
 using StructuredStream;
 using Microsoft.Cosmos.ScopeStudio.BusinessObjects.Common.VCUtility;
 using Microsoft.Cosmos.ClientTools.IDECommon;

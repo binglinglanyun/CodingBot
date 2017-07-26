@@ -37,7 +37,7 @@ namespace CodingBot
 
             bool validInput = true;
             //check whether users input is valid
-            if ((nextnode != -1) && (nextnode != 1) && (issue.m_lDesc.Count >0) && (issue.m_lDesc.Last() != ""))
+            if ((nextnode!=106003) && (nextnode != -1) && (nextnode != 1) && (issue.m_lDesc.Count >0) && (issue.m_lDesc.Last() != ""))
             {
                 HashSet<string> keywordsOfCurrentNode = Resource.m_DTopicTree[nextnode].Item3;
                 string userInput = issue.m_lDesc.Last();
@@ -145,6 +145,11 @@ namespace CodingBot
                     else if (actionType == 2)
                     {
                         responseData.TableOperation = TableOperationType.ShowCheckBox;
+                        responseData.TableItems = issue.AllTableItems.Values.ToList();
+                    }
+                    else if (actionType == 4)
+                    {
+                        responseData.TableOperation = TableOperationType.UpdateDataStatus;
                         responseData.TableItems = issue.AllTableItems.Values.ToList();
                     }
                 }
@@ -359,7 +364,7 @@ namespace CodingBot
                 issus.Operation = "AGGREGATE";
                 nextnode = 105;
             }
-            else if (userInput == "5" || userInput.IndexOf("CROSS APPLY", StringComparison.InvariantCultureIgnoreCase) >= 0)
+            else if (userInput == "5" || userInput.IndexOf("CROSS APPLY", StringComparison.InvariantCultureIgnoreCase) >= 0 || userInput.IndexOf("split", StringComparison.InvariantCultureIgnoreCase) >= 0)
             {
                 issus.Operation = "APPLY";
                 nextnode = 109;
