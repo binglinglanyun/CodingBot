@@ -8,7 +8,7 @@ namespace CodingBot
 {
     public static class CodeGenerator
     {
-        public static void Main(string[] args)
+      /*  public static void Main(string[] args)
         {
             string Operation = "APPLY";
             string SubOperation = "INNER JOIN";
@@ -33,8 +33,8 @@ namespace CodingBot
             List<List<string>> res = CodeGenerate(BotData);
 
 
-        }
-        static int table_num = 1;
+        }*/
+         
         public static List<List<string>> CodeGenerate(Dictionary<string, object> command)
         {
 
@@ -44,7 +44,7 @@ namespace CodingBot
             List<List<string>> Keys = (List<List<string>>)command["Keys"];
             string FilterCondition = (string)command["FilterCondition"];
             List<List<string>> SelectColumns = (List<List<string>>)command["SelectColumns"];
-
+            string new_tablename = (string)command["TableName"];
 
             string code_res = "";
             string cs_code_res = "";
@@ -74,7 +74,7 @@ namespace CodingBot
                     {
                         for (int i = 0; i <= reference_list.Count - 1; i++)
                         {
-                            code_res += "REFERENCE @\"" + resource_list[i][0] + "\";\n";
+                            code_res += "REFERENCE @\"" + reference_list[i][0] + "\";\n";
                         }
                     }
                     for (int i = 0; i <= inpath_list.Count - 1; i++)
@@ -92,9 +92,9 @@ namespace CodingBot
                     break;
 
                 case "EXTRACT":
-                    code_res += "Table_" + table_num.ToString() + " = \n\t";
+                    code_res += new_tablename + " = \n\t";
 
-                    res_table_name.Add("Table_" + table_num.ToString());
+                    res_table_name.Add(new_tablename);
                     table_res.Add(res_table_name);
 
                     string extracted_table_name = Tables[0][0][0];
@@ -137,9 +137,9 @@ namespace CodingBot
                     break;
 
                 case "FILTER":
-                    code_res += "Table_" + table_num.ToString() + " = \n\t";
+                    code_res += new_tablename + " = \n\t";
 
-                    res_table_name.Add("Table_" + table_num.ToString());
+                    res_table_name.Add(new_tablename);
                     table_res.Add(res_table_name);
 
                     string selected_table_name = Tables[0][0][0];
@@ -191,7 +191,56 @@ namespace CodingBot
                     }
                     if (FilterCondition != "")
                     {
-                        code_res += "\n\tWHERE " + FilterCondition + ";\n";
+                        string norm_condition = "";
+                        if (FilterCondition.IndexOf("is larger than") != -1)
+                        {
+                            norm_condition = FilterCondition.Replace("is larger than", ">");
+                        }
+                        else if (FilterCondition.IndexOf("larger than") != -1)
+                        {
+                            norm_condition = FilterCondition.Replace("larger than", ">");
+                        }
+                        else if (FilterCondition.IndexOf("is smaller than") != -1)
+                        {
+                            norm_condition = FilterCondition.Replace("is smaller than", "<");
+                        }
+                        else if (FilterCondition.IndexOf("is equal to") != -1)
+                        {
+                            norm_condition = FilterCondition.Replace("is equal to", "==");
+                        }
+                        else if (FilterCondition.IndexOf("equal to") != -1)
+                        {
+                            norm_condition = FilterCondition.Replace("equal to", "==");
+                        }
+                        else if (FilterCondition.IndexOf("is not equal to") != -1)
+                        {
+                            norm_condition = FilterCondition.Replace("is not equal to", "!=");
+                        }
+                        else if (FilterCondition.IndexOf("not equal to") != -1)
+                        {
+                            norm_condition = FilterCondition.Replace("not equal to", "!=");
+                        }
+                        else if (FilterCondition.IndexOf("is not larger than") != -1)
+                        {
+                            norm_condition = FilterCondition.Replace("is not larger than", "<=");
+                        }
+                        else if (FilterCondition.IndexOf("not larger than") != -1)
+                        {
+                            norm_condition = FilterCondition.Replace("not larger than", "<=");
+                        }
+                        else if (FilterCondition.IndexOf("is not smaller than") != -1)
+                        {
+                            norm_condition = FilterCondition.Replace("is not smaller than", ">=");
+                        }
+                        else if (FilterCondition.IndexOf("not smaller than") != -1)
+                        {
+                            norm_condition = FilterCondition.Replace("not smaller than", ">=");
+                        }
+                        else
+                        {
+                            norm_condition = FilterCondition;
+                        }
+                        code_res += "\n\tWHERE " + norm_condition + ";\n";
                     }
                     else
                         code_res += ";\n";
@@ -200,9 +249,9 @@ namespace CodingBot
                     break;
 
                 case "EXCEPT":
-                    code_res += "Table_" + table_num.ToString() + " = \n\t";
+                    code_res += new_tablename + " = \n\t";
 
-                    res_table_name.Add("Table_" + table_num.ToString());
+                    res_table_name.Add(new_tablename);
                     table_res.Add(res_table_name);
 
                     for (int i = 0; i <= Tables.Count - 2; i++)
@@ -245,9 +294,9 @@ namespace CodingBot
 
 
                 case "UNION":
-                    code_res += "Table_" + table_num.ToString() + " = \n\t";
+                    code_res += new_tablename + " = \n\t";
 
-                    res_table_name.Add("Table_" + table_num.ToString());
+                    res_table_name.Add(new_tablename);
                     table_res.Add(res_table_name);
 
                     for (int i = 0; i <= Tables.Count - 2; i++)
@@ -291,9 +340,9 @@ namespace CodingBot
 
 
                 case "AGGREGATE":
-                    code_res += "Table_" + table_num.ToString() + " = \n\t";
+                    code_res += new_tablename + " = \n\t";
 
-                    res_table_name.Add("Table_" + table_num.ToString());
+                    res_table_name.Add(new_tablename);
                     table_res.Add(res_table_name);
 
                     string aggregate_table_name = Tables[0][0][0];
@@ -333,9 +382,9 @@ namespace CodingBot
                     break;
 
                 case "JOIN":
-                    code_res += "Table_" + table_num.ToString() + " = \n\t";
+                    code_res += new_tablename + " = \n\t";
 
-                    res_table_name.Add("Table_" + table_num.ToString());
+                    res_table_name.Add(new_tablename);
                     table_res.Add(res_table_name);
                     string table1_name = Tables[0][0][0];
                     string table2_name = Tables[1][0][0];
@@ -400,16 +449,28 @@ namespace CodingBot
                     table_res.Add(res_col_type);
 
                     code_res += "SELECT ";
-                    for (int i = 0; i <= table1_code_str.Count - 1; i++)
-                    {
-                        code_res += table1_code_str[i] + ",\n\t       ";
-                    }
 
-                    for (int i = 0; i <= table2_code_str.Count - 2; i++)
+                    if (table2_code_str.Count == 0)
                     {
-                        code_res += table2_code_str[i] + ",\n\t       ";
+                        for (int i = 0; i <= table1_code_str.Count - 2; i++)
+                        {
+                            code_res += table1_code_str[i] + ",\n\t       ";
+                        }
+                        code_res += table1_code_str[table1_code_str.Count - 1] + "\n";
                     }
-                    code_res += table2_code_str[table2_code_str.Count - 1] + "\n";
+                    else
+                    {
+                        for (int i = 0; i <= table1_code_str.Count - 1; i++)
+                        {
+                            code_res += table1_code_str[i] + ",\n\t       ";
+                        }
+                        for (int i = 0; i <= table2_code_str.Count - 2; i++)
+                        {
+                            code_res += table2_code_str[i] + ",\n\t       ";
+                        }
+                        code_res += table2_code_str[table2_code_str.Count - 1] + "\n";
+                    }
+                       
                     code_res += "\tFROM " + table1_name + "\n\t     " + SubOperation + "\n\t     \t" + table2_name + "\n\t     ON ";
                     for (int i = 0; i <= Keys[0].Count - 2; i++)
                     {
@@ -421,8 +482,19 @@ namespace CodingBot
 
                 case "PROCESS":
                     string before_table_name = Tables[0][0][0];
-                    List<string> after_table_colname = Tables[1][1];
-                    List<string> after_table_coltype = Tables[1][2];
+                    List<string> after_table_colname = new List<string>();
+                    List<string> after_table_coltype = new List<string>();
+
+                    string process_schema = FilterCondition;
+
+                    string[] process_parts = process_schema.Split(new string[]{","}, StringSplitOptions.None);
+
+                    for (int i = 0; i <= process_parts.Length - 1; i++)
+                    {
+                        string[] process_details = process_parts[i].Split(new string[] { ":" }, StringSplitOptions.None);
+                        after_table_colname.Add(process_details[0]);
+                        after_table_coltype.Add(process_details[1]);
+                    }
 
                     cs_code_res += "public class " + before_table_name + "Processor : Processor\n{\n\tpublic override Schema Produces(string[] requestedColumns, string[] args, Schema input)\n\t{\n\t\tvar outputSchema = new Schema(\"";
                     for (int i = 0; i <= after_table_colname.Count - 2; i++)
@@ -432,10 +504,10 @@ namespace CodingBot
                     cs_code_res += after_table_colname[after_table_colname.Count - 1] + ":" + after_table_coltype[after_table_colname.Count - 1] + "\");\n\t\treturn outputSchema;\n\t}\n\n\tpublic override IEnumerable<Row> Process(RowSet input_rowset, Row output_row, string[] args)\n{\n\t\tforeach (Row row in input_rowset.Rows)\n\t\t{\n\n\t\t}\n\t}\n}\n";
 
 
-                    code_res += "Table_" + table_num.ToString() + " =\n\t" + "PROCESS " + before_table_name + "\n\t" + "PRODUCE ";
+                    code_res += new_tablename + " =\n\t" + "PROCESS " + before_table_name + "\n\t" + "PRODUCE ";
 
 
-                    res_table_name.Add("Table_" + table_num.ToString());
+                    res_table_name.Add(new_tablename);
                     table_res.Add(res_table_name);
 
                     for (int i = 0; i <= after_table_colname.Count - 2; i++)
@@ -453,8 +525,19 @@ namespace CodingBot
 
                 case "REDUCE":
                     string before_table_name2 = Tables[0][0][0];
-                    List<string> after_table_colname2 = Tables[1][1];
-                    List<string> after_table_coltype2 = Tables[1][2];
+
+                    List<string> after_table_colname2 = new List<string>();
+                    List<string> after_table_coltype2 = new List<string>();
+                    string reduce_schema = FilterCondition;
+
+                    string[] reduce_parts = reduce_schema.Split(new string[]{","}, StringSplitOptions.None);
+
+                    for (int i = 0; i <= reduce_parts.Length - 1; i++)
+                    {
+                        string[] reduce_details = reduce_parts[i].Split(new string[] { ":" }, StringSplitOptions.None);
+                        after_table_colname2.Add(reduce_details[0]);
+                        after_table_coltype2.Add(reduce_details[1]);
+                    }
 
                     cs_code_res += "public class " + before_table_name2 + "Reducer : Reducer\n{\n\tpublic override Schema Produces(string[] requestedColumns, string[] args, Schema input)\n\t{\n\t\tvar outputSchema = new Schema(\"";
                     for (int i = 0; i <= after_table_colname2.Count - 2; i++)
@@ -464,10 +547,10 @@ namespace CodingBot
                     cs_code_res += after_table_colname2[after_table_colname2.Count - 1] + ":" + after_table_coltype2[after_table_colname2.Count - 1] + "\");\n\t\treturn outputSchema;\n\t}\n\n\tpublic override IEnumerable<Row> Reduce(RowSet input_rowset, Row output_row, string[] args)\n{\n\t\tforeach (Row row in input_rowset.Rows)\n\t\t{\n\n\t\t}\n\t}\n}\n";
 
 
-                    code_res += "Table_" + table_num.ToString() + " =\n\t" + "REDUCE " + before_table_name2 + "\n\t" + "PRODUCE ";
+                    code_res += new_tablename + " =\n\t" + "REDUCE " + before_table_name2 + "\n\t" + "PRODUCE ";
 
 
-                    res_table_name.Add("Table_" + table_num.ToString());
+                    res_table_name.Add(new_tablename);
                     table_res.Add(res_table_name);
 
                     for (int i = 0; i <= after_table_colname2.Count - 2; i++)
@@ -486,8 +569,19 @@ namespace CodingBot
                 case "COMBINE":
                     string before_table_name31 = Tables[0][0][0];
                     string before_table_name32 = Tables[1][0][0];
-                    List<string> after_table_colname3 = Tables[2][1];
-                    List<string> after_table_coltype3 = Tables[2][2];
+
+                    List<string> after_table_colname3 = new List<string>();
+                    List<string> after_table_coltype3 = new List<string>();
+                    string combine_schema = FilterCondition;
+
+                    string[] combine_parts = combine_schema.Split(new string[]{","}, StringSplitOptions.None);
+
+                    for (int i = 0; i <= combine_parts.Length - 1; i++)
+                    {
+                        string[] combine_details = combine_parts[i].Split(new string[] { ":" }, StringSplitOptions.None);
+                        after_table_colname3.Add(combine_details[0]);
+                        after_table_coltype3.Add(combine_details[1]);
+                    }
 
                     cs_code_res += "public class " + before_table_name31 + "Combiner : Combiner\n{\n\tpublic override Schema Produces(string[] requestedColumns, string[] args, Schema leftSchema, string leftTable, Schema rightSchema, string rightTable)\n\t{\n\t\tvar outputSchema = new Schema(\"";
                     for (int i = 0; i <= after_table_colname3.Count - 2; i++)
@@ -497,10 +591,10 @@ namespace CodingBot
                     cs_code_res += after_table_colname3[after_table_colname3.Count - 1] + ":" + after_table_coltype3[after_table_colname3.Count - 1] + "\");\n\t\treturn outputSchema;\n\t}\n\n\tpublic override IEnumerable<Row> Combine(RowSet left, RowSet right, Row outputRow, string[] args)\n{\n\t\tforeach (Row rightRow in right.Rows)\n\t\t{\n\n\t\t}\n\t\tforeach (Row leftRow in left.Rows)\n\t\t{\n\n\t\t}\n\t}\n}\n";
 
 
-                    code_res += "Table_" + table_num.ToString() + " =\n\t" + "COMBINE " + before_table_name31 + " WITH " + before_table_name32 + "\n\t" + "USING " + before_table_name31 + "Combiner;\n";
+                    code_res += new_tablename + " =\n\t" + "COMBINE " + before_table_name31 + " WITH " + before_table_name32 + "\n\t" + "USING " + before_table_name31 + "Combiner;\n";
 
 
-                    res_table_name.Add("Table_" + table_num.ToString());
+                    res_table_name.Add(new_tablename);
                     table_res.Add(res_table_name);
 
                     for (int i = 0; i <= after_table_colname3.Count - 1; i++)
@@ -516,9 +610,9 @@ namespace CodingBot
                     break;
 
                 case "APPLY":
-                    code_res += "Table_" + table_num.ToString() + " = \n\t";
+                    code_res += new_tablename + " = \n\t";
 
-                    res_table_name.Add("Table_" + table_num.ToString());
+                    res_table_name.Add(new_tablename);
                     table_res.Add(res_table_name);
 
                     string split_table_name = Tables[0][0][0];

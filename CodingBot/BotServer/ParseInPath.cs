@@ -13,7 +13,7 @@ using Microsoft.Analytics.Interfaces;
 using Microsoft.Analytics.Types.Sql;
 using Microsoft.SqlServer;
 using CodingBot.ViewModels;
-
+using VcClient;
 namespace CodingBot
 {
 
@@ -731,41 +731,44 @@ namespace CodingBot
         {
 
         }
-        static TableItem ParseFilePath(string inpath)
+        
+        public  TableItem ParseFilePath(int index, string inpath)
         {
+            string VC_path = "https://cosmos08.osdinfra.net/cosmos/bingads.algo.incubation";
             TableItem res_table;
             if (inpath.IndexOf(".ss") == inpath.Length - 3)
             {
-                Stream stream = Factory.VCClientStreamFactory.OpenReadOnlyStream(inpath);
+                Stream stream = Factory.VCClientStreamFactory.OpenReadOnlyStream(VC_path+inpath);
                 SStreamPlusColumnGroup.IStreamMetadataReader streamMetadataReader = Factory.CreateStreamMetadataReader();
-                streamMetadataReader.Open(stream, inpath);
+                streamMetadataReader.Open(stream, VC_path+inpath);
                 StructuredStream.StructuredStreamSchema sstreamSchema = streamMetadataReader.Metadata.Schema;
                 List<string> table_name = new List<string>();
                 List<string> col_name = new List<string>();
                 List<string> col_type = new List<string>();
-                table_name.Add("null");
+
+                table_name.Add("( SSTREAM @inpath"+index.ToString()+" )");
                 List<ColumnInfo> col_list = sstreamSchema.ScopeSchema.Columns.ToList();
                 for (int i = 0; i <= col_list.Count - 1; i++)
                 {
 
                     col_name.Add(col_list[i].Name.ToString());
-                    col_type.Add(col_list[i].Type.ToString());
-
+                    col_type.Add(col_list[i].Type.ToString().ToLower());
+                    
                 }
-                res_table = new TableItem(table_name, col_name, col_type);
+                res_table = new TableItem(table_name,col_name,col_type);
             }
             else
             {
-                VcWrapper vc = new VcWrapper();
-
-                Stream stream2 = vc.ReadStream(inpath, 0, 100, true);
+                //VcWrapper vc = new VcWrapper();
+                //VcWrapper VC = new VcWrapper();
+                Stream stream2 = VC.ReadStream(VC_path+inpath, 0, 1000, true);
                 using (StreamReader reader = new StreamReader(stream2))
                 {
                     int currentRow = 0;
                     List<string> table_name = new List<string>();
                     List<string> col_name = new List<string>();
                     List<string> col_type = new List<string>();
-                    table_name.Add("null");
+                    table_name.Add("@inpath"+index.ToString());
                     while (!reader.EndOfStream && currentRow < 2)
                     {
                         currentRow++;
@@ -774,7 +777,7 @@ namespace CodingBot
                         for (int i = 0; i <= parts.Length - 1; i++)
                         {
                             col_name.Add("column_" + i.ToString());
-                            col_type.Add(DataTypeIdentifier.IdentifyToDataType(parts[i]));
+                            col_type.Add(DataTypeIdentifier.IdentifyToDataType(parts[i]).ToLower());
                         }
                     }
                     res_table = new TableItem(table_name, col_name, col_type);
