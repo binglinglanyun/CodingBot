@@ -10,56 +10,65 @@
 101001	101	101002		what's your filter condition?	0
 101002	101001	101003,101004,	>,<,=,!,smaller,bigger,less,larger,isnullorempty	Do you want to select columns:Y/N?	0
 101003	101002	101005	yes,true,y	Please select columns:	5
-101005	101003	1		What's the name of new generated Table	4
-101004	101002	1	no,n,nope	What's the name of new generated Table	4
-
+101005	101003	101007		What's the name of new generated Table	0
+101004	101002	101006	no,n,nope	What's the name of new generated Table	0
+101006	101004	1		Code generation complete!	4
+101007	101005	1		Code generation complete!	4
 //join
 102	1	102001	7,join,merge,	Which JOIN operation do you need?\nINNER JOIN/LEFT OUTER JOIN/RIGHT OUTER JOIN/LEFT SEMIJOIN/RIGHT SEMIJOIN/CROSS JOIN	0
 102001	102	102002	INNER JOIN,LEFT OUTER JOIN,RIGHT OUTER JOIN,LEFT SEMIJOIN,RIGHT SEMIJOIN,CROSS JOIN	which two tables do you want to join?	2
 102002	102001	102003		Please select keys for join:	3
-102003	102002	1		What's the name of new generated Table	4
+102003	102002	102004		What's the name of new generated Table	0
+102004	102003	1		Code generation complete!	4
 
 //except
 103	1	103001	8,subtract,except,exclude,excluding,minus	Which two table do you want to EXCEPT?	2
 103001	103	103002,103003		Do you want to select columns:Y/N?	0
 103002	103001	103004	yes,true,y	Please select columns:	5
-103004	103002	1		What's the name of new generated Table	4
-103003	103001	1	no,n,nope	What's the name of new generated Table	4
-
+103004	103002	103006		What's the name of new generated Table	0
+103003	103001	103005	no,n,nope	What's the name of new generated Table	0
+103005	103003	1		Code generation complete!	4
+103006	103004	1		Code generation complete!	4
 
 
 //union  
 104	1	104001	6,add,union,stack	Which two table do you want to union?	2
 104001	104	104002,104003		Do you want to select columns:Y/N?	0
 104002	104001	104004	yes,true,y	Please select columns:{select columns}?	5
-104004	104002	1		What's the name of new generated Table	4
-104003	104001	1	no,n,nope	What's the name of new generated Table	4
-
+104004	104002	104006		What's the name of new generated Table	0
+104003	104001	104005	no,n,nope	What's the name of new generated Table	0
+104005	104003	1		Code generation complete!	4
+104006	104004	1		Code generation complete!	4
 
 
 //aggregate  
 105	1	105001	4,aggregate,agg	Which aggegative operation do you want?\nSUM/AVG/COUNT	0
 105001	105	105002	sum,summary,count,cnt,average,avg	Which table do you want to aggregate?	1 
 105002	105001	105003		Which columns do you want to aggragate?	5
-105003	105002	1		What's the name of new generated Table	4
+105003	105002	105004		What's the name of new generated Table	0
+105004	105003	1		Code generation complete!	4
 
 //process
 106	1	106001	2,process,processor	Which table do you want to process?	1
 106001	106	106002		What is the schema of output{column name:date type}?	0
-106002	106001	1	schema,out schema,output schema,output form,output format,out form,out format,:,int,string,float,double	What's the name of new generated Table	4
+106002	106001	106003	schema,out schema,output schema,output form,output format,out form,out format,:,int,string,float,double	What's the name of new generated Table	0
+106003	106002	1		Code generation complete!	4
 
 //reduce
 107	1	107001	3,reduce,reducer	Which table do you want to reduce?	1
 107001	107	107002		What is the schema of output{column name:date type}?	0
-107002	107001	1	schema,out schema,output schema,output form,output format,out form,out format,:,int,string,float,double	What's the name of new generated Table	4
+107002	107001	107003	schema,out schema,output schema,output form,output format,out form,out format,:,int,string,float,double	What's the name of new generated Table	0
+107003	107002	1		Code generation complete!	4
 
 //combine
 108	1	108001	9,combine,combiner	Which two table do you want to combine?	1
 108001	108	108002		What is the schema of output{column name:date type}?	0
-108002	108001	1	schema,out schema,output schema,output form,output format,out form,out format,:,int,string,float,double	What's the name of new generated Table	4
+108002	108001	108003	schema,out schema,output schema,output form,output format,out form,out format,:,int,string,float,double	What's the name of new generated Table	0
+108003	108002	1		Code generation complete!	4
 
 //apply
 109	1	109001	5,split,apply,cross apply	Which table do you want to do?	1
 109001	109	109002		Which column do you want to do?	5
 109002	109001	109003		What point do you want to use in split?	0
-109003	109002	1		What's the name of new generated Table	4
+109003	109002	109004		What's the name of new generated Table	0
+109004	109003	1		Code generation complete!	4

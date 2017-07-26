@@ -37,7 +37,7 @@ namespace CodingBot
 
             bool validInput = true;
             //check whether users input is valid
-            if ((nextnode != -1) && (nextnode != 1) && (issue.m_lDesc.Count >0) && (issue.m_lDesc.Last() != ""))
+            if ((nextnode!=106003) && (nextnode != -1) && (nextnode != 1) && (issue.m_lDesc.Count >0) && (issue.m_lDesc.Last() != ""))
             {
                 HashSet<string> keywordsOfCurrentNode = Resource.m_DTopicTree[nextnode].Item3;
                 string userInput = issue.m_lDesc.Last();
