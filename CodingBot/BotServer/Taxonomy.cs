@@ -35,6 +35,30 @@ namespace CodingBot
                 nextnode = getNextOneNode(ref issue);
             }
 
+            bool validInput = true;
+            //check whether users input is valid
+            if ((nextnode != -1) && (nextnode != 1) && (issue.m_lDesc.Count >0) && (issue.m_lDesc.Last() != ""))
+            {
+                HashSet<string> keywordsOfCurrentNode = Resource.m_DTopicTree[nextnode].Item3;
+                string userInput = issue.m_lDesc.Last();
+
+                validInput = false;
+
+                foreach(var keyword in keywordsOfCurrentNode)
+                {
+                    if(userInput.ToLower().IndexOf(keyword.ToLower(), StringComparison.InvariantCultureIgnoreCase) >= 0)
+                    {
+                        validInput = true;
+                    }
+                }
+
+                if (!validInput)
+                {
+                    nextnode = -1;
+                }
+            }
+
+
             if (nextnode == -1)
             {
                 // no node found, we regard user's input as invalid
@@ -70,7 +94,8 @@ namespace CodingBot
                 //TODO: if nextnode is suboperation of join or aggregate, we need to update the issue.Suboperation field
                 if (nextnode == 105001 || nextnode == 102001)
                 {
-                    issue.SubOperation = issue.m_lDesc.Last();
+                    if(issue.SubOperation == "")
+                        issue.SubOperation = issue.m_lDesc.Last();
                 }
 
                 //TODO: remenber users's input, such as filter/APPLY
@@ -82,9 +107,18 @@ namespace CodingBot
                 responseData.BotMessage = question;
                 if (Resource.m_DTopicTree[nextnode].Item5 != 0)
                 {
-                    // special operation:
 
-                    //TODO: insert TableItem
+/*
+    public enum TableOperationType
+    {
+        None = 0,  // Don't need to opreation any control
+        ShowRadioBox = 1,  // Need to show radio box
+        ShowCheckBox = 2,  // Need to show check box
+        ShowMultiComboBox = 3,  // Need to show multiple check box
+        UpdateDataStatus = 4,  // Need to Update Data Status
+        ShowCheckBoxForSingleTable = 5, // Show CheckBox For Single Table
+    }
+ */
                     int actionType = Resource.m_DTopicTree[nextnode].Item5;
 
                     issue.ActionType = actionType;
@@ -96,21 +130,19 @@ namespace CodingBot
                         responseData.TableItems = issue.AllTableItems.Values.ToList();
                     }
                     // select columns
-                    else if (actionType == 2)
+                    else if (actionType == 5)
                     {
-                        // temp comment: xiangnan
-                        //responseData.TableOperation = TableOperationType.ShowMultiCheckBox;
+                        responseData.TableOperation = TableOperationType.ShowCheckBoxForSingleTable;
                         responseData.TableItems = issue.SelectedTableItems;
                     }
                     // select keys for join
                     else if (actionType == 3)
                     {
-                        // temp comment: xiangnan
-                        //responseData.TableOperation = TableOperationType.ShowMultiCheckBox;
+                        responseData.TableOperation = TableOperationType.ShowMultiComboBox;
                         responseData.TableItems = issue.SelectedTableItems;
                     }
                     // select two table
-                    else if (actionType == 4)
+                    else if (actionType == 2)
                     {
                         responseData.TableOperation = TableOperationType.ShowCheckBox;
                         responseData.TableItems = issue.AllTableItems.Values.ToList();
@@ -120,8 +152,8 @@ namespace CodingBot
 
             }
 
-
-            issue.m_nCurrentTopicId = nextnode; //update currentid
+            if(validInput)
+                issue.m_nCurrentTopicId = nextnode; //if invalid, we keep the last node
             return responseData;
         }
 
@@ -151,6 +183,7 @@ namespace CodingBot
         public int MatchKeyword(string input, int themeid) //matched nodes id and matched keywords
         {
 
+            input = input.ToLower();
             char[] spaceSpliter = { ' ' };
 
 
@@ -259,9 +292,9 @@ namespace CodingBot
             List<List<string>> SelectColumns = new List<List<string>> { issue.SelectedColumns };
 
             string newTableName = issue.m_lDesc.Last();
-            if (newTableName == "")
+            if (newTableName == "" || newTableName == "no" || newTableName == "NO" || newTableName == "N" || newTableName == "n")
             {
-                newTableName = "Table_" + 1 + issue.AllTableItems.Count;
+                newTableName = "Table_" + (1 + issue.AllTableItems.Count);
             }
 
             Dictionary<string, object> BotData = new Dictionary<string, object> { {"Operation", Operation},
@@ -306,47 +339,47 @@ namespace CodingBot
             //1. Filter\t2. PROCESS\t3. REDUCE\t4.AGGREGATE\t5.CROSS APPLY\n
             //6. UNION\t7.JOIN\t8.EXCEPT\t9.COMBINE\n
             int nextnode = -1;
-            if (userInput == "1" || userInput.Equals("Filter", StringComparison.InvariantCultureIgnoreCase))
+            if (userInput == "1" || userInput.IndexOf("Filter", StringComparison.InvariantCultureIgnoreCase) >= 0)
             {
                 issus.Operation = "FILTER";
                 nextnode = 101;
             }
-            else if (userInput == "2" || userInput.Equals("process", StringComparison.InvariantCultureIgnoreCase))
+            else if (userInput == "2" || userInput.IndexOf("process", StringComparison.InvariantCultureIgnoreCase) >= 0)
             {
                 issus.Operation = "PROCESS";
                 nextnode = 106;
             }
-            else if (userInput == "3" || userInput.Equals("REDUCE", StringComparison.InvariantCultureIgnoreCase))
+            else if (userInput == "3" || userInput.IndexOf("REDUCE", StringComparison.InvariantCultureIgnoreCase) >= 0)
             {
                 issus.Operation = "REDUCE";
                 nextnode = 107;
             }
-            else if (userInput == "4" || userInput.Equals("AGGREGATE", StringComparison.InvariantCultureIgnoreCase))
+            else if (userInput == "4" || userInput.IndexOf("AGGREGATE", StringComparison.InvariantCultureIgnoreCase) >= 0)
             {
                 issus.Operation = "AGGREGATE";
                 nextnode = 105;
             }
-            else if (userInput == "5" || userInput.Equals("CROSS APPLY", StringComparison.InvariantCultureIgnoreCase))
+            else if (userInput == "5" || userInput.IndexOf("CROSS APPLY", StringComparison.InvariantCultureIgnoreCase) >= 0)
             {
                 issus.Operation = "APPLY";
                 nextnode = 109;
             }
-            else if (userInput == "6" || userInput.Equals("UNION", StringComparison.InvariantCultureIgnoreCase))
+            else if (userInput == "6" || userInput.IndexOf("UNION", StringComparison.InvariantCultureIgnoreCase) >= 0)
             {
                 issus.Operation = "UNION";
                 nextnode = 104;
             }
-            else if (userInput == "7" || userInput.Equals("JOIN", StringComparison.InvariantCultureIgnoreCase))
+            else if (userInput == "7" || userInput.IndexOf("JOIN", StringComparison.InvariantCultureIgnoreCase) >= 0)
             {
                 issus.Operation = "JOIN";
                 nextnode = 102;
             }
-            else if (userInput == "8" || userInput.Equals("EXCEPT", StringComparison.InvariantCultureIgnoreCase))
+            else if (userInput == "8" || userInput.IndexOf("EXCEPT", StringComparison.InvariantCultureIgnoreCase) >= 0)
             {
                 issus.Operation = "EXCEPT";
                 nextnode = 103;
             }
-            else if (userInput == "9" || userInput.Equals("COMBINE", StringComparison.InvariantCultureIgnoreCase))
+            else if (userInput == "9" || userInput.IndexOf("COMBINE", StringComparison.InvariantCultureIgnoreCase) >= 0)
             {
                 issus.Operation = "COMBINE";
                 nextnode = 108;
@@ -380,10 +413,13 @@ namespace CodingBot
                 if (specialKey != "")
                 {
                     specialKey = specialKey == "SUMMARY" ? "SUM" : specialKey;
-                    specialKey = specialKey == "CNT" ? "SUM" : specialKey;
-                    specialKey = specialKey == "AVERAGE" ? "SUM" : specialKey;
+                    specialKey = specialKey == "CNT" ? "COUNT" : specialKey;
+                    specialKey = specialKey == "AVERAGE" ? "AVG" : specialKey;
+            
+
 
                     nextnode = suboperations[specialKey];
+
 
                     issus.SubOperation = specialKey;
                     if (nextnode == 102001)

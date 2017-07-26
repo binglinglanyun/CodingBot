@@ -41,6 +41,8 @@ namespace CodingBot.Common
         /// </summary>
         public List<TableItem> TableItems;
 
+        public List<TableItem> AllTableItems;
+
         public ResponseData()
         {
             this.TableOperation = TableOperationType.None;
