@@ -27,9 +27,9 @@ namespace CodingBot.Controls
         private const double c_maxConversationBoxWidth = 300;
         private SolidColorBrush _botMessageBackground = Brushes.PaleGreen;
         private SolidColorBrush _botMessageForeground = Brushes.Black;
-        private Thickness _botMessageThickness = new Thickness(5,0,0,0);
+        private Thickness _botMessageThickness = new Thickness(5, 0, 0, 0);
         private Thickness _messagePadding = new Thickness(10);
-        private Thickness _botControlThickness = new Thickness(10,5,0,0);
+        private Thickness _botControlThickness = new Thickness(10, 5, 0, 0);
         private Thickness _botButtonThickness = new Thickness(10);
 
         private List<string> _radioBoxData = new List<string>();
@@ -121,7 +121,7 @@ namespace CodingBot.Controls
                     }
                 }
 
-                ResponseData responseData = CodingBotClient.Instance.BotServer.GetResponseInteractive(new List<List<string>> { this._radioBoxData});
+                ResponseData responseData = CodingBotClient.Instance.BotServer.GetResponseInteractive(new List<List<string>> { this._radioBoxData });
                 if (responseData != null)
                 {
                     if (!string.IsNullOrEmpty(responseData.SciptContent))
@@ -260,7 +260,7 @@ namespace CodingBot.Controls
             textBox.Width = c_maxConversationBoxWidth;
             textBox.Foreground = this._botMessageForeground;
             textBox.Background = this._botMessageBackground;
-            textBox.Margin = new Thickness(5,10,0,0);
+            textBox.Margin = new Thickness(5, 10, 0, 0);
             textBox.Padding = this._messagePadding;
             this._conversationDisplayRegion.Children.Add(textBox);
             ScrollToEnd();
@@ -379,10 +379,10 @@ namespace CodingBot.Controls
 
         private StackPanel CreateKeyPairPanel()
         {
-            
+
             StackPanel keyPairPanel = new StackPanel();
             keyPairPanel.Orientation = Orientation.Horizontal;
-            keyPairPanel.Margin = new Thickness(5) ;
+            keyPairPanel.Margin = new Thickness(5);
             keyPairPanel.Background = this._botMessageBackground;
             TextBlock textBlock = new TextBlock();
             textBlock.VerticalAlignment = VerticalAlignment.Center;
@@ -402,7 +402,7 @@ namespace CodingBot.Controls
                         ComboBoxItem comboBoxItem = new ComboBoxItem();
                         comboBoxItem.Content = string.Format("{0}({1})", rowItem.ColumnName, rowItem.DataType);
                         comboBox.Items.Add(comboBoxItem);
-                    }  
+                    }
                 }
 
                 keyPairPanel.Children.Add(comboBox);
@@ -516,7 +516,7 @@ namespace CodingBot.Controls
                 responseData.TableOperation = TableOperationType.ShowCheckBoxForSingleTable;
             }
             cycle++;
-   
+
             int count = 2;
             if (responseData.TableOperation == TableOperationType.UpdateDataStatus)
             {
@@ -613,6 +613,17 @@ namespace CodingBot.Controls
             {
                 _inputBoxVisibility = value;
                 NotifyPropertyChanged("InputBoxVisibility");
+            }
+        }
+
+        public ICommand EnterKeyClick
+        {
+            get
+            {
+                return new DelegateCommand( () =>
+                {
+                    this.InputBoxSend_Click(null, null);
+                });
             }
         }
         #endregion
