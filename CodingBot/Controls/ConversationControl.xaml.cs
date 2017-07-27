@@ -622,7 +622,10 @@ namespace CodingBot.Controls
             {
                 return new DelegateCommand( () =>
                 {
-                    this.InputBoxSend_Click(null, null);
+                    if (!string.IsNullOrEmpty(this.InputBoxText))
+                    {
+                        this.InputBoxSend_Click(null, null);
+                    }
                 });
             }
         }
